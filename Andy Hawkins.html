@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Alignment Score Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .client-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header-meta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Overall Score Card */
+        .score-card {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .overall-score {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .persona-name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .persona-tagline {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        /* Dimension Cards */
+        .dimensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .dimension-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-card:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+
+        .dimension-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .dimension-persona {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+
+        .dimension-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+
+        .dimension-description {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #D09038;
+        }
+
+        /* Bottom Line Box */
+        .bottom-line {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+
+        .bottom-line h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+        }
+
+        .bottom-line p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Domain Scores */
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+
+        .domain-item.strong {
+            border-left-color: #D09038;
+        }
+
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .domain-score-badge.perfect {
+            color: #4CAF50;
+        }
+
+        .domain-score-badge.needs-attention {
+            color: #f44336;
+        }
+
+        /* Recommendations */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-card h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .recommendation-card h4 {
+            color: #D09038;
+            margin: 20px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .recommendation-card p,
+        .recommendation-card ul {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-card ul {
+            padding-left: 25px;
+        }
+
+        .recommendation-card li {
+            margin-bottom: 8px;
+        }
+
+        /* Action Plan */
+        .action-plan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .action-plan h3 {
+            color: #6B2C3A;
+            margin-bottom: 20px;
+        }
+
+        .action-timeline {
+            margin-bottom: 25px;
+        }
+
+        .action-timeline h4 {
+            color: #D09038;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-list li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .action-list li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #D09038;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer h3 {
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .cta-button {
+                display: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .client-name {
+                font-size: 1.5rem;
+            }
+            .content {
+                padding: 20px;
+            }
+            .overall-score {
+                font-size: 4rem;
+            }
+            .dimensions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Your Alignment Score Results</h1>
+            <div class="client-name">Andy Hawkins</div>
+            <div class="header-meta">
+                Personal Growth Guide | February 10, 2026<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Overall Score Card -->
+            <div class="score-card">
+                <div class="overall-score">90%</div>
+                <div class="score-label">Overall Alignment Score</div>
+                <div class="persona-name">The Master Navigator</div>
+                <div class="persona-tagline">
+                    You're operating in the top tier of human functioning. This level of alignment is rare—you've achieved what most people spend entire lifetimes seeking.
+                </div>
+            </div>
+
+            <!-- Your Journey - 3 Dimensions -->
+            <section class="section">
+                <h2 class="section-header">Your Journey</h2>
+                <div class="dimensions">
+                    <div class="dimension-card">
+                        <div class="dimension-label">PAST</div>
+                        <div class="dimension-persona">Phoenix</div>
+                        <div class="dimension-score">93%</div>
+                        <div class="dimension-description">
+                            You've transformed pain into perspective. Your past informs you without controlling you. You've reached a level of self-understanding that allows you to move through life without being defined by what happened before.
+                        </div>
+                    </div>
+
+                    <div class="dimension-card">
+                        <div class="dimension-label">PRESENT</div>
+                        <div class="dimension-persona">Flow Keeper</div>
+                        <div class="dimension-score">86%</div>
+                        <div class="dimension-description">
+                            You've built strong systems that support both performance and peace. You understand yourself deeply and manage your life with intention, not reaction.
+                        </div>
+                    </div>
+
+                    <div class="dimension-card">
+                        <div class="dimension-label">FUTURE</div>
+                        <div class="dimension-persona">Compass Holder</div>
+                        <div class="dimension-score">96%</div>
+                        <div class="dimension-description">
+                            You have crystal-clear direction. Your goals are intentional, your courage is active, and you're not just moving forward—you're building with foresight.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottom-line">
+                <h3>The Bottom Line</h3>
+                <p><strong>You don't need advice—you need acknowledgment. This IS what alignment looks like.</strong></p>
+                <p>But here's the important question: Are you still moving toward what matters, or are you just moving well?</p>
+                <p><strong>At 90%, your biggest risk isn't failure. It's complacency.</strong></p>
+            </div>
+
+            <!-- What's Exceptional -->
+            <section class="section">
+                <h2 class="section-header">What's Exceptional: Your Seven Perfect Scores</h2>
+                <p style="margin-bottom: 30px; color: #555;">You have SEVEN domains where you scored a perfect 5.0 out of 5.0. That's extraordinary.</p>
+                
+                <div class="domain-grid">
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Work & Purpose</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Temperament Awareness</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Gratitude</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Financial Security & Intentionality</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Courage & Resilience</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Learning & Growth Orientation</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                    <div class="domain-item perfect">
+                        <span class="domain-name">Daily Routines</span>
+                        <span class="domain-score-badge perfect">5.0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="section-header">What Needs Attention: Your One Gap</h2>
+                <p style="margin-bottom: 30px; color: #555;">In your entire assessment, you only have ONE score below 4.0.</p>
+                
+                <div class="domain-grid">
+                    <div class="domain-item needs-attention">
+                        <span class="domain-name">Nutrition & Exercise Intentionality</span>
+                        <span class="domain-score-badge needs-attention">1.0</span>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <h3>Why This Matters at Your Age</h3>
+                    <p>You're 55-64. This is the critical decade.</p>
+                    <p><strong>Your body sets the ceiling for everything else.</strong> You cannot sustain 90% alignment into your 60s and 70s on a nutrition/exercise score of 1.</p>
+                    <p>The habits you build (or don't build) in your late 50s and early 60s determine your quality of life in your 70s and 80s.</p>
+                    
+                    <h4>The Good News</h4>
+                    <p>You already have the skills. You scored a perfect 5 on daily routines. You know how to build habits. You manage your time perfectly (5). You just haven't applied this to physical health yet.</p>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <div class="action-plan">
+                <h3>Your 90-Day Action Plan</h3>
+                
+                <div class="action-timeline">
+                    <h4>Month 1: Foundation</h4>
+                    <ul class="action-list">
+                        <li>Choose ONE physical health anchor (nutrition OR exercise)</li>
+                        <li>Write your legacy statement (30 minutes alone)</li>
+                        <li>Start 15 minutes outdoors daily</li>
+                        <li>Schedule full medical check-up</li>
+                    </ul>
+                </div>
+
+                <div class="action-timeline">
+                    <h4>Month 2: Building</h4>
+                    <ul class="action-list">
+                        <li>Physical health anchor now 30+ days (keep going)</li>
+                        <li>Outdoor time automatic</li>
+                        <li>Legacy small bet: second action</li>
+                        <li>Consider nutrition coaching or personal trainer</li>
+                    </ul>
+                </div>
+
+                <div class="action-timeline">
+                    <h4>Month 3: Integration</h4>
+                    <ul class="action-list">
+                        <li>Physical anchor 70+ days (deeply routine now)</li>
+                        <li>Legacy project defined</li>
+                        <li>Medical check-up completed, follow recommendations</li>
+                        <li>First quarterly recalibration completed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Quarterly Recalibration -->
+            <section class="section">
+                <h2 class="section-header">Quarterly Recalibration: Preventing Complacency</h2>
+                <div class="recommendation-card">
+                    <p style="margin-bottom: 20px;"><strong>At 90%, your biggest risk isn't failure—it's complacency.</strong></p>
+                    <h4>Every 90 Days (4x/Year)</h4>
+                    <p>Block 2 hours alone. No distractions. Answer these five questions:</p>
+                    <ol>
+                        <li style="margin-bottom: 15px;"><strong>"Am I still moving toward what matters, or am I just moving well?"</strong><br>
+                        Are your actions aligned with your deepest values? Or are you just maintaining the status quo really efficiently?</li>
+                        
+                        <li style="margin-bottom: 15px;"><strong>"What am I saying no to?"</strong><br>
+                        High performers say yes too often. What needs boundaries? What's draining energy without adding meaning?</li>
+                        
+                        <li style="margin-bottom: 15px;"><strong>"Who am I becoming?"</strong><br>
+                        Not just what you're doing, but who you're evolving into. Do you like that person?</li>
+                        
+                        <li style="margin-bottom: 15px;"><strong>"What would 95% alignment look like? Do I want that?"</strong><br>
+                        You're at 90%. What's the next 5%? Is it worth pursuing? Or is 90% actually your sweet spot?</li>
+                        
+                        <li style="margin-bottom: 15px;"><strong>"Am I building something that lasts or just building my resume?"</strong><br>
+                        Legacy check. Will this matter in 10 years? What will outlive your career?</li>
+                    </ol>
+                    <p style="margin-top: 20px;"><em>This is how you stay at 90%+ for the next 20 years.</em></p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey and transition planning.</p>
+            <a href="#" class="cta-button">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                chris@alignmentpsychiatry.com
+            </p>
+        </div>
+    </div>
+</body>
+</html>
