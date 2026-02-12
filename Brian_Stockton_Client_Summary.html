@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Alignment Score Results – Brian Stockton</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6; color: #333; background: #f5f5f5;
+        }
+        .container { max-width: 900px; margin: 0 auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
+        .header { background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%); color: white; padding: 60px 40px; text-align: center; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; letter-spacing: 1px; }
+        .client-name { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; }
+        .header-meta { font-size: 0.95rem; opacity: 0.9; margin-top: 20px; }
+
+        .content { padding: 40px; }
+
+        .score-card { background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%); color: white; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
+        .overall-score { font-size: 5rem; font-weight: 700; line-height: 1; margin-bottom: 10px; }
+        .score-label { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; }
+        .persona-name { font-size: 2rem; font-weight: 600; margin-bottom: 20px; }
+        .persona-tagline { font-size: 1.1rem; opacity: 0.95; font-style: italic; }
+
+        .dimensions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .dimension-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 25px; transition: all 0.3s ease; }
+        .dimension-card:hover { border-color: #D09038; box-shadow: 0 4px 12px rgba(208,144,56,0.2); }
+        .dimension-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+        .dimension-persona { font-size: 1.3rem; font-weight: 600; color: #6B2C3A; margin-bottom: 8px; }
+        .dimension-score { font-size: 2rem; font-weight: 700; color: #D09038; margin-bottom: 15px; }
+        .dimension-description { font-size: 0.95rem; color: #555; line-height: 1.5; }
+
+        .section { margin-bottom: 40px; }
+        .section-header { font-size: 1.8rem; color: #6B2C3A; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #D09038; }
+
+        .bottom-line { background: #fef9f0; border-left: 4px solid #D09038; padding: 25px; margin-bottom: 40px; border-radius: 4px; }
+        .bottom-line h3 { color: #6B2C3A; margin-bottom: 15px; }
+        .bottom-line p { color: #555; margin-bottom: 10px; }
+
+        .domain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .domain-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #f9f9f9; border-radius: 6px; border-left: 4px solid transparent; }
+        .domain-item.perfect { border-left-color: #4CAF50; background: #f1f8f4; }
+        .domain-item.strong { border-left-color: #D09038; }
+        .domain-item.developing { border-left-color: #E65100; background: #fff8f0; }
+        .domain-item.needs-attention { border-left-color: #f44336; background: #fff3f3; }
+        .domain-name { font-weight: 500; color: #333; }
+        .domain-score-badge { font-weight: 700; font-size: 1.2rem; min-width: 50px; text-align: right; }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        .recommendation-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-bottom: 20px; }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin: 20px 0 10px; font-size: 1.1rem; }
+        .recommendation-card p, .recommendation-card ul, .recommendation-card ol { color: #555; margin-bottom: 15px; }
+        .recommendation-card ul, .recommendation-card ol { padding-left: 25px; }
+        .recommendation-card li { margin-bottom: 8px; }
+
+        .action-plan { background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%); border: 2px solid #D09038; border-radius: 8px; padding: 30px; margin-bottom: 30px; }
+        .action-plan h3 { color: #6B2C3A; margin-bottom: 20px; font-size: 1.6rem; }
+        .action-timeline { margin-bottom: 25px; }
+        .action-timeline h4 { color: #D09038; margin-bottom: 15px; font-size: 1.2rem; }
+        .action-list { list-style: none; padding: 0; }
+        .action-list li { padding: 10px 0 10px 30px; position: relative; color: #555; }
+        .action-list li:before { content: "☐"; position: absolute; left: 0; color: #D09038; font-size: 1.2rem; }
+
+        .reminder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .reminder-card { background: #fef9f0; border-top: 3px solid #D09038; border-radius: 6px; padding: 20px; }
+        .reminder-card h4 { color: #6B2C3A; margin-bottom: 10px; font-size: 1rem; }
+        .reminder-card p { font-size: 0.92rem; color: #555; line-height: 1.5; }
+
+        .faq-item { border-bottom: 1px solid #eee; padding: 20px 0; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-item h4 { color: #6B2C3A; margin-bottom: 10px; font-size: 1.05rem; }
+        .faq-item p { color: #555; font-size: 0.95rem; margin-bottom: 8px; }
+
+        .next-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .next-steps-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; }
+        .next-steps-card h4 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.1rem; border-bottom: 2px solid #D09038; padding-bottom: 8px; }
+        .next-steps-card ul { list-style: none; padding: 0; }
+        .next-steps-card li { padding: 8px 0 8px 28px; position: relative; color: #555; font-size: 0.93rem; }
+        .next-steps-card li:before { content: "☐"; position: absolute; left: 0; color: #D09038; }
+
+        .resource-section { margin-bottom: 25px; }
+        .resource-section h4 { color: #D09038; margin-bottom: 12px; font-size: 1.05rem; }
+        .resource-section ul { padding-left: 20px; }
+        .resource-section li { color: #555; margin-bottom: 8px; font-size: 0.93rem; }
+
+        .final-word { background: linear-gradient(135deg, #fef9f0 0%, #fff 100%); border: 2px solid #6B2C3A; border-radius: 8px; padding: 40px; margin-bottom: 40px; }
+        .final-word p { color: #444; margin-bottom: 18px; line-height: 1.7; }
+        .final-word .closing-quote { font-style: italic; font-size: 1.15rem; color: #6B2C3A; border-left: 4px solid #D09038; padding-left: 20px; margin: 25px 0; }
+        .final-word .tagline { font-style: italic; color: #888; font-size: 0.95rem; text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+
+        .footer { background: #6B2C3A; color: white; padding: 40px; text-align: center; }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .cta-button { display: inline-block; background: #D09038; color: white; padding: 15px 40px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 20px; transition: all 0.3s ease; }
+        .cta-button:hover { background: #b87b2e; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        @media print { body { background: white; } .container { box-shadow: none; } .cta-button { display: none; } }
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; } .header h1 { font-size: 2rem; } .client-name { font-size: 1.5rem; }
+            .content { padding: 20px; } .overall-score { font-size: 4rem; } .dimensions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>Your Alignment Score Results</h1>
+        <div class="client-name">Brian Stockton</div>
+        <div class="header-meta">
+            Personal Growth Guide &nbsp;|&nbsp; February 11, 2026<br>
+            Assessment: The Alignment Score &nbsp;|&nbsp; Coach: Chris Hoffman, Alignment Psychiatry
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- OVERALL SCORE -->
+        <div class="score-card">
+            <div class="overall-score">74%</div>
+            <div class="score-label">Overall Alignment Score</div>
+            <div class="persona-name">The Flexible Strategist</div>
+            <div class="persona-tagline">
+                Your adaptability is a superpower — and it's also where your next challenge lives. You've built something solid: integrated past, purposeful work, authentic relationships. Now the work is to build the structure around your vision that turns flexibility into forward movement.
+            </div>
+        </div>
+
+        <!-- YOUR JOURNEY -->
+        <section class="section">
+            <h2 class="section-header">Your Journey</h2>
+            <div class="dimensions">
+                <div class="dimension-card">
+                    <div class="dimension-label">PAST</div>
+                    <div class="dimension-persona">Phoenix</div>
+                    <div class="dimension-score">91%</div>
+                    <div class="dimension-description">
+                        You've done the deep work of integrating your story. You know your wiring, you've moved past what could have defined you, and you carry your past as perspective — not weight. Your self-understanding here is rare and is the strongest foundation in your profile.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-label">PRESENT</div>
+                    <div class="dimension-persona">Tightrope Walker</div>
+                    <div class="dimension-score">69%</div>
+                    <div class="dimension-description">
+                        You're strong in purpose and relationships, but your physical systems are running below spec. Work/Purpose at 4.5 is excellent — but Habits/Health/Energy at 2.75 is the gap your whole present is built around. That imbalance is the story of your present moment.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-label">FUTURE</div>
+                    <div class="dimension-persona">Pathfinder</div>
+                    <div class="dimension-score">70%</div>
+                    <div class="dimension-description">
+                        You have meaning and courage — both strong. But your Goals & Ambition score (2.33) is your lowest number in the entire assessment. You know what matters. The work now is building the concrete system that actually moves you toward it. Vision without a plan stays as vision.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM LINE -->
+        <div class="bottom-line">
+            <h3>The Bottom Line</h3>
+            <p><strong>You're not in trouble — you're undertargeted.</strong> Your values are clear, your past is integrated, and your work is meaningful. But two things are actively limiting what's possible for you right now.</p>
+            <p>Your body is running below the threshold required to sustain high performance. And your ambition hasn't been translated into a concrete, tracked goal system yet.</p>
+            <p><strong>Fix those two things and 74% becomes 82%+. These are solvable problems — not character issues.</strong></p>
+        </div>
+
+        <!-- WHAT'S WORKING -->
+        <section class="section">
+            <h2 class="section-header">What's Working: Your Strengths</h2>
+            <p style="margin-bottom: 30px; color: #555;">You have <strong>one perfect score</strong> and six additional domains at 4.0 or above. Here's what's actually working well.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Temperament Awareness</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Work &amp; Purpose</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Gratitude</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Self-Acceptance &amp; Forgiveness</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Core Beliefs &amp; Identity</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Meaning &amp; Contribution</span>
+                    <span class="domain-score-badge strong">4.33</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Courage &amp; Resilience</span>
+                    <span class="domain-score-badge strong">4.33</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Relationships &amp; Authenticity</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>⭐ Temperament Awareness: What a Perfect 5.0 Actually Means</h3>
+                <p>You understand your wiring — your natural pace, sensitivities, and emotional rhythm. You know what depletes you, what restores you, and how to work with your nervous system instead of against it. Most people spend their entire lives fighting their temperament. You've learned to honor it.</p>
+                <p>This is your highest leverage strength. Every sustainable habit, every productive relationship, every goal system that actually works for you will be built on this foundation. You already know how you operate — you just need to design your physical and strategic life around that knowledge.</p>
+                <h4>How to Use This</h4>
+                <p>When you're building your one physical anchor (more on this below), don't copy someone else's system. Design one that fits your temperament. When do you have the most energy? What kind of movement do you actually enjoy? What makes eating well feel sustainable rather than effortful? Your 5.0 here means you already have the answers.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Work &amp; Purpose (4.5): The Foundation That Holds Everything</h3>
+                <p>You've found (or built) work that connects to your values. When meaning and productivity overlap, motivation becomes intrinsic — you're driven by what matters, not just what's expected. As Chief of Staff overseeing HR, your daily work contributes to something you actually care about.</p>
+                <p>This is the difference between being driven and being drained. Your work may not be perfect every day, but it aligns with who you are. That's rare — and it's one of the reasons 74% is real, not hollow.</p>
+                <h4>The Important Caution</h4>
+                <p>Your Work/Purpose score (4.5) is currently carrying a lot of weight. Because your work is meaningful, it can compensate for a depleted physical foundation longer than it should. Your passion keeps you going — but passion is not a substitute for sleep, nutrition, and physical recovery. <strong style="color: #b87b2e;">Don't let your mission become your excuse to neglect your maintenance.</strong></p>
+            </div>
+        </section>
+
+        <!-- WHAT NEEDS ATTENTION -->
+        <section class="section">
+            <h2 class="section-header">What Needs Attention: Your Two Critical Gaps</h2>
+            <p style="margin-bottom: 30px; color: #555;">In your entire assessment, you have two scores below 3.0. These are your highest-leverage areas — fixing them will move your overall score more than anything else.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item needs-attention">
+                    <span class="domain-name">⚠️ Habits, Health &amp; Energy</span>
+                    <span class="domain-score-badge needs-attention">2.75</span>
+                </div>
+                <div class="domain-item needs-attention">
+                    <span class="domain-name">⚠️ Goals &amp; Ambition</span>
+                    <span class="domain-score-badge needs-attention">2.33</span>
+                </div>
+                <div class="domain-item developing">
+                    <span class="domain-name">Self-Awareness &amp; Emotional Intelligence</span>
+                    <span class="domain-score-badge developing">3.2</span>
+                </div>
+                <div class="domain-item developing">
+                    <span class="domain-name">Learning &amp; Growth Orientation</span>
+                    <span class="domain-score-badge developing">3.0</span>
+                </div>
+                <div class="domain-item developing">
+                    <span class="domain-name">Financial Security &amp; Intentionality</span>
+                    <span class="domain-score-badge developing">3.0</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 1: Habits, Health &amp; Energy (2.75/5) ⚠️</h3>
+                <p><strong>This is urgent.</strong> A score of 2.75 at age 45–54 is the single highest-risk number in your profile. Your brain runs on your body. The cognitive clarity, emotional regulation, and decision quality that your Chief of Staff role requires — all of it is being produced by a system that isn't being adequately maintained.</p>
+
+                <h4>What's Actually Happening</h4>
+                <p>You're not lazy. You're running a demanding job, likely at full capacity, on depleted physical reserves. When stress outpaces recovery consistently, habits break — not because of character failure, but because the nervous system prioritizes survival functions over self-care. You're probably running on motivation and momentum. That works — until it doesn't.</p>
+                <p>You scored a perfect 5 on Temperament Awareness. You know your patterns. That means you likely already know this is true, even if it's easier to keep going than to stop and address it.</p>
+
+                <h4>Your One Anchor — Start Here</h4>
+                <p>Don't try to fix everything at once. Choose one and protect it for 14 days before adding anything:</p>
+                <ul>
+                    <li><strong>Sleep:</strong> A consistent bedtime within the same 30-minute window, every night. Non-negotiable.</li>
+                    <li><strong>Movement:</strong> 10–15 minutes immediately after work, before re-engaging with anything else. Walk. That's it.</li>
+                    <li><strong>Nutrition:</strong> Eat breakfast before starting work. Every day. Same time. Just that.</li>
+                </ul>
+                <p>One anchor. Fourteen days. Then add the next.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 2: Goals &amp; Ambition (2.33/5) — Your Lowest Score ⚠️</h3>
+                <p><strong>This is your most important growth edge for the future.</strong> A 2.33 here doesn't mean you lack ambition. It means the ambition you have hasn't been translated into a concrete, tracked, consistent goal system. You likely have vision. You don't yet have the architecture to consistently pursue it.</p>
+
+                <h4>The Flexible Strategist Trap</h4>
+                <p>Your persona — Flexible Strategist — names this exactly. Your adaptability is genuine and valuable. But flexibility becomes a trap when nothing ever solidifies. You adjust to conditions so readily that you don't always commit to a direction. You start, you pivot, you respond. That's a strength in high-uncertainty environments. It becomes a problem when the flexibility is applied to your own goals.</p>
+                <p><em>The question isn't what you want. It's: what are you building toward that matters enough that you'll say no to things that don't serve it?</em></p>
+
+                <h4>What to Build</h4>
+                <ul>
+                    <li>One 90-day goal with three monthly milestones</li>
+                    <li>A weekly 20-minute review: what did I complete? what did I avoid?</li>
+                    <li>One person who knows your goal and checks in on it</li>
+                </ul>
+                <p>The goal itself matters less than the act of committing to one and tracking it. Momentum builds from completion, not perfection.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Also Worth Addressing: Three Developing Areas</h3>
+                <h4>Self-Awareness &amp; EQ (3.2)</h4>
+                <p>You have self-awareness — but episodically. Under normal conditions, you read yourself and others well. Under stress or high demand, that awareness narrows. This is the area most likely to benefit from a consistent reflective practice: 10 minutes of journaling or decompression at the end of high-intensity days.</p>
+                <h4>Learning &amp; Growth (3.0)</h4>
+                <p>This score often surprises senior professionals — and it's usually not about capability. It reflects whether growth is being intentionally pursued vs. happening incidentally. With 11 years in the field, you may be growing through experience without tracking or intentionally investing in it. One professional development commitment in the next 90 days would move this significantly.</p>
+                <h4>Financial Security (3.0)</h4>
+                <p>At your income level with no dependents, this score is most often about longer-horizon clarity rather than present-day crisis. What does financial security actually look like for you — 5 years from now? 15? Getting specific about that number and that timeline typically resolves this score quickly.</p>
+            </div>
+        </section>
+
+        <!-- 90-DAY ACTION PLAN -->
+        <div class="action-plan">
+            <h3>Your 90-Day Action Plan</h3>
+            <p style="margin-bottom: 25px; color: #666;">Two priorities. One at a time. Build from the foundation up.</p>
+
+            <div class="action-timeline">
+                <h4>Month 1: Foundation — Physical Anchor + Goal Commitment</h4>
+                <ul class="action-list">
+                    <li>Choose your one physical anchor (sleep, movement, or nutrition) and start it today</li>
+                    <li>Write your 90-day goal — one sentence, specific and measurable</li>
+                    <li>Tell one person your goal and ask them to check in at 30 days</li>
+                    <li>Block 20 minutes every Sunday for a weekly review (what did I do? what did I avoid?)</li>
+                    <li>Schedule one appointment that's only for your health</li>
+                </ul>
+            </div>
+
+            <div class="action-timeline">
+                <h4>Month 2: Integration — Sustain + Deepen</h4>
+                <ul class="action-list">
+                    <li>Physical anchor at 30+ days — this should feel close to automatic now</li>
+                    <li>Monthly milestone 1 completed or in-progress with evidence</li>
+                    <li>Identify one professional development investment (book, course, mentor, peer group)</li>
+                    <li>Add a second physical practice if anchor is fully stable</li>
+                    <li>Explore financial horizon clarity: write what "financially secure" looks like specifically for you</li>
+                </ul>
+            </div>
+
+            <div class="action-timeline">
+                <h4>Month 3: Acceleration — Build the Habit of Building</h4>
+                <ul class="action-list">
+                    <li>Physical anchor at 70+ days — no longer tracked, just done</li>
+                    <li>90-day goal: final sprint or completion; document what you learned</li>
+                    <li>Define your next 90-day goal before this one ends — keep the system going</li>
+                    <li>Reassessment scheduled: May 12, 2026</li>
+                    <li>Reflect: What's different? What do you want 82% to look like?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <section class="section">
+            <h2 class="section-header">Resources for Your Journey</h2>
+
+            <div class="recommendation-card">
+                <h3>For Habits, Health &amp; Energy</h3>
+                <div class="resource-section">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>"Atomic Habits"</strong> by James Clear — best evidence-based guide to the one-anchor approach; start here</li>
+                        <li><strong>"Why We Sleep"</strong> by Matthew Walker — if sleep is your anchor, this book will permanently change how you treat it</li>
+                        <li><strong>"The Comfort Crisis"</strong> by Michael Easter — for someone with a 5.0 Temperament Awareness, this book will resonate on a physiological level</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><strong>Oura Ring or WHOOP</strong> — sleep and recovery tracking; makes the invisible visible</li>
+                        <li><strong>Streaks (iOS)</strong> — dead-simple one-habit tracker for your anchor</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Professional Support</h4>
+                    <ul>
+                        <li><strong>Functional medicine physician</strong> — if fatigue and energy dysregulation are persistent, physiological assessment (hormones, sleep architecture, metabolic panel) is the right next step</li>
+                        <li><strong>Personal trainer or health coach</strong> — accountability partner for physical anchor, particularly if self-directed efforts haven't held</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>For Goals, Ambition &amp; Execution</h3>
+                <div class="resource-section">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>"12 Week Year"</strong> by Brian Moran — the best framework for 90-day goal execution; matches exactly what your Goals score needs</li>
+                        <li><strong>"Deep Work"</strong> by Cal Newport — for someone whose flexibility gets hijacked by reactivity, this creates the structure for intentional output</li>
+                        <li><strong>"Essentialism"</strong> by Greg McKeown — directly addresses the Flexible Strategist trap: what matters enough to protect?</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Professional Support</h4>
+                    <ul>
+                        <li><strong>Executive coach</strong> — specifically someone who works with goal architecture and accountability; 1–2 sessions/month for 90 days can shift a 2.33 significantly</li>
+                        <li><strong>Peer accountability group</strong> — two to three peers at similar career level who share goals and check in weekly</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section class="section">
+            <h2 class="section-header">Frequently Asked Questions</h2>
+            <div class="recommendation-card">
+
+                <div class="faq-item">
+                    <h4>"I scored 74%. Is that good or bad?"</h4>
+                    <p>74% is genuinely good — you're functioning well above average across most dimensions of life. Your past is deeply integrated, your purpose is alive, and your relationships are real. What 74% tells you is that there's meaningful room to grow — and specifically where to grow it.</p>
+                    <p>The gap between 74% and 82%+ is almost entirely accounted for by two addressable scores: Habits/Health/Energy (2.75) and Goals/Ambition (2.33). These aren't identity issues. They're structural ones.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"Why is my past (91%) so much higher than my present (69%)?"</h4>
+                    <p>Because you've done the inner work — on your story, your identity, your temperament — but haven't built the outer structures to match. Past integration requires reflection, which you've clearly done. Present performance requires daily systems — habits, routines, physical maintenance — which take a different kind of work.</p>
+                    <p>High past, lower present is a very common profile in thoughtful, self-aware professionals. The good news: the self-knowledge is already there. You're not starting from zero. You're building on a solid foundation.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"What does 'Flexible Strategist' actually mean for me?"</h4>
+                    <p>It means your adaptability is real and valuable — and it's also where your biggest growth edge lives. Flexible Strategists tend to navigate uncertainty beautifully, build trust quickly, and stay composed under pressure. They also tend to avoid committing to trajectories, over-adjust to conditions, and confuse motion with direction.</p>
+                    <p>The question to sit with: <em>What am I building toward that matters enough that I'll protect it even when something interesting shows up to distract me?</em></p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"My Goals score is 2.33 — does that mean I'm not ambitious?"</h4>
+                    <p>No. It means your ambition isn't operationalized. You likely have plenty of vision and drive — but vision without a concrete goal system stays as aspiration. The score measures whether your goals are clear, consistent, and being tracked — not whether you care about your future.</p>
+                    <p>One specific, written 90-day goal with weekly tracking will move this score more than any amount of motivation.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"How do I build habits when I'm already maxed out?"</h4>
+                    <p>You don't build habits when you're maxed out. You anchor one. The anchor goes before the day really starts, or at the transition point between work and home — not in the margins, where nothing survives. Start with something so small that not doing it would feel like a choice, not a failure. Grow from there.</p>
+                    <p>You have a 5.0 Temperament Awareness. Use it. When does your energy actually allow something? Anchor there.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"When should I reassess?"</h4>
+                    <p>90 days is the right interval — long enough for real behavioral change to register in your scores, short enough to course-correct if you've drifted. Your next target: <strong>May 12, 2026</strong>. Primary markers to watch: Habits/Health/Energy (targeting 3.5+) and Goals/Ambition (targeting 3.5+). If both move, your overall score likely moves 6–8 points.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- REMINDERS -->
+        <section class="section">
+            <h2 class="section-header">Reminders for Your Journey</h2>
+            <div class="reminder-grid">
+                <div class="reminder-card">
+                    <h4>Your Past Is Your Foundation</h4>
+                    <p>91% past integration is exceptional. You've done the work most people avoid their entire lives. Build from that — don't underestimate it.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Flexibility Is a Skill, Not a Dodge</h4>
+                    <p>Your adaptability got you here. Now it needs a target. Commit to one direction long enough to see if it works before adjusting.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Your Body Sets the Ceiling</h4>
+                    <p>Everything else you want — sharper thinking, better decisions, sustained performance — requires a physical foundation that is currently insufficient. This is your most urgent repair.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>One Anchor Changes Everything</h4>
+                    <p>Don't try to fix all the health things at once. One anchor, protected consistently, starts a cascade. Consistency beats intensity every time.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Momentum Comes from Completion</h4>
+                    <p>Your Goals score suffers not from lack of dreams but lack of completions. Finish one small thing. Then another. The habit of finishing is what builds the future you're describing.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>74% Is Real — and Improvable</h4>
+                    <p>Don't minimize what you've built. And don't stop building. Both things are true. You're further along than most — and the next 8–10 points are waiting for you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT STEPS -->
+        <section class="section">
+            <h2 class="section-header">Next Steps</h2>
+            <div class="next-steps-grid">
+                <div class="next-steps-card">
+                    <h4>This Week</h4>
+                    <ul>
+                        <li>Choose your one physical anchor and start it today — not Monday</li>
+                        <li>Write your 90-day goal in one specific sentence</li>
+                        <li>Block 20 min Sunday for your first weekly review</li>
+                        <li>Tell one person your goal and ask them to check in</li>
+                        <li>Schedule one health appointment</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Month</h4>
+                    <ul>
+                        <li>Physical anchor practiced 20+ days out of 30</li>
+                        <li>First monthly milestone for your 90-day goal defined and started</li>
+                        <li>Read one book from the resources list</li>
+                        <li>Write what "financially secure" actually means in concrete numbers</li>
+                        <li>One honest mid-month check-in: what's held? what hasn't?</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Quarter</h4>
+                    <ul>
+                        <li>Physical anchor stable and automatic — no longer effortful</li>
+                        <li>90-day goal completed or documented with lessons</li>
+                        <li>Next 90-day goal already defined before this one ends</li>
+                        <li>At least one professional development investment made</li>
+                        <li>Reassessment scheduled: May 12, 2026</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL WORD -->
+        <section class="section">
+            <h2 class="section-header">A Final Word</h2>
+            <div class="final-word">
+                <p><strong>Brian,</strong></p>
+                <p>74% is not a number that requires apology. You've built a past that's integrated and clear, a work life that's actually meaningful, relationships that are genuine, and a temperament you understand well enough to use. That doesn't happen without real work.</p>
+                <p>But here's what your scores are telling me: you've done the inner work and haven't yet built the outer architecture to match. You know who you are. You haven't built the physical and strategic systems to protect and extend that for the next 20 years.</p>
+                <p>The two gaps — physical maintenance and concrete goal execution — aren't random. They're the exact place where adaptable, purpose-driven people tend to stall. Not because they don't care. Because caring about the mission becomes the justification for skipping the maintenance. And because flexibility becomes an elegant way of not committing.</p>
+                <p><strong>Habits, Health &amp; Energy at 2.75. Goals &amp; Ambition at 2.33.</strong> These two numbers, moved to 3.5+ each, change your overall score by 6–8 points and — more importantly — change what the next decade feels like. That's the work in front of you.</p>
+
+                <div class="closing-quote">
+                    "The future doesn't need to be rigid. But it does need stakes. What are you building toward that matters enough to protect?"<br>
+                    — That's the Flexible Strategist's question. Now go answer it.
+                </div>
+
+                <p style="margin-bottom: 5px;"><strong>Coach Chris Hoffman</strong></p>
+                <p style="margin-bottom: 5px;">Alignment Psychiatry</p>
+                <p>chris@alignmentpsychiatry.com</p>
+
+                <div class="tagline">
+                    Reassessment Target: May 12, 2026 &nbsp;|&nbsp; Expected Range: 80–82%
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="footer">
+        <h3>Ready to Dive Deeper?</h3>
+        <p>Questions about your results? Ready to build the physical and strategic architecture your vision deserves?</p>
+        <p>Schedule a session to discuss your alignment journey and what concrete change looks like.</p>
+        <a href="mailto:chris@alignmentpsychiatry.com" class="cta-button">Book Your Strategy Call</a>
+        <p style="margin-top: 30px; font-size: 0.9rem;">
+            Coach Chris Hoffman<br>
+            Alignment Psychiatry<br>
+            chris@alignmentpsychiatry.com
+        </p>
+    </div>
+
+</div>
+</body>
+</html>
