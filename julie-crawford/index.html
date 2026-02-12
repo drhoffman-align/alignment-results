@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Alignment Score Results – Julie C.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .client-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header-meta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Overall Score Card */
+        .score-card {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .overall-score {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .persona-name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .persona-tagline {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        /* Dimension Cards */
+        .dimensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .dimension-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-card:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+
+        .dimension-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .dimension-persona {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+
+        .dimension-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+
+        .dimension-description {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #D09038;
+        }
+
+        /* Bottom Line Box */
+        .bottom-line {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+
+        .bottom-line h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+        }
+
+        .bottom-line p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Domain Scores */
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+
+        .domain-item.strong {
+            border-left-color: #D09038;
+        }
+
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .domain-score-badge.perfect {
+            color: #4CAF50;
+        }
+
+        .domain-score-badge.strong {
+            color: #D09038;
+        }
+
+        .domain-score-badge.needs-attention {
+            color: #f44336;
+        }
+
+        /* Recommendation Cards */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-card h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .recommendation-card h4 {
+            color: #D09038;
+            margin: 20px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .recommendation-card p,
+        .recommendation-card ul,
+        .recommendation-card ol {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-card ul,
+        .recommendation-card ol {
+            padding-left: 25px;
+        }
+
+        .recommendation-card li {
+            margin-bottom: 8px;
+        }
+
+        /* Action Plan */
+        .action-plan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .action-plan h3 {
+            color: #6B2C3A;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .action-timeline {
+            margin-bottom: 25px;
+        }
+
+        .action-timeline h4 {
+            color: #D09038;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-list li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .action-list li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #D09038;
+            font-size: 1.2rem;
+        }
+
+        /* Reminder Cards */
+        .reminder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .reminder-card {
+            background: #fef9f0;
+            border-top: 3px solid #D09038;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .reminder-card h4 {
+            color: #6B2C3A;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .reminder-card p {
+            font-size: 0.92rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* FAQ */
+        .faq-item {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item h4 {
+            color: #6B2C3A;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .faq-item p {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        /* Next Steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .next-steps-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .next-steps-card h4 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #D09038;
+            padding-bottom: 8px;
+        }
+
+        .next-steps-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps-card li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: #555;
+            font-size: 0.93rem;
+        }
+
+        .next-steps-card li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #D09038;
+        }
+
+        /* Final Word */
+        .final-word {
+            background: linear-gradient(135deg, #fef9f0 0%, #fff 100%);
+            border: 2px solid #6B2C3A;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .final-word p {
+            color: #444;
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        .final-word .closing-quote {
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #6B2C3A;
+            border-left: 4px solid #D09038;
+            padding-left: 20px;
+            margin: 25px 0;
+        }
+
+        .final-word .tagline {
+            font-style: italic;
+            color: #888;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Resources */
+        .resource-section {
+            margin-bottom: 25px;
+        }
+
+        .resource-section h4 {
+            color: #D09038;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .resource-section ul {
+            padding-left: 20px;
+        }
+
+        .resource-section li {
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 0.93rem;
+        }
+
+        /* Score Metric */
+        .score-metric {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .score-metric .num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #D09038;
+        }
+
+        .score-metric .denom {
+            font-size: 1rem;
+            color: #999;
+        }
+
+        /* Footer */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer h3 {
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .cta-button { display: none; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .header h1 { font-size: 2rem; }
+            .client-name { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .overall-score { font-size: 4rem; }
+            .dimensions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Your Alignment Score Results</h1>
+        <div class="client-name">Julie C.</div>
+        <div class="header-meta">
+            Personal Growth Guide &nbsp;|&nbsp; February 11, 2026<br>
+            Assessment: The Alignment Score &nbsp;|&nbsp; Coach: Chris Hoffman, Alignment Psychiatry
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- OVERALL SCORE CARD -->
+        <div class="score-card">
+            <div class="overall-score">81%</div>
+            <div class="score-label">Overall Alignment Score</div>
+            <div class="persona-name">The Steady Rebuilder</div>
+            <div class="persona-tagline">
+                You're operating at elite level — in the top tier of human functioning. You've built something real across your past, present, and future. This isn't luck. It's the result of deep self-work, values-rooted decisions, and three decades of showing up.
+            </div>
+        </div>
+
+        <!-- YOUR JOURNEY – 3 DIMENSIONS -->
+        <section class="section">
+            <h2 class="section-header">Your Journey</h2>
+            <div class="dimensions">
+                <div class="dimension-card">
+                    <div class="dimension-label">PAST</div>
+                    <div class="dimension-persona">The Phoenix</div>
+                    <div class="dimension-score">86%</div>
+                    <div class="dimension-description">
+                        You've done the hard work of integrating your story. You know who you are, you've moved past inherited identities, and you've turned pain into perspective. Your foundation is solid — and one area still holds tenderness: self-forgiveness surfaces under stress, but you're well past the halfway point of transformation.
+                    </div>
+                </div>
+
+                <div class="dimension-card">
+                    <div class="dimension-label">PRESENT</div>
+                    <div class="dimension-persona">Tightrope Walker</div>
+                    <div class="dimension-score">77%</div>
+                    <div class="dimension-description">
+                        You're walking a wire — strong in meaning and purpose, under-resourced in physical self-care. Your work is aligned with your values at an exceptional level (4.75/5). But your habits, health, and energy are running low (2.75/5). That gap is the story of your present.
+                    </div>
+                </div>
+
+                <div class="dimension-card">
+                    <div class="dimension-label">FUTURE</div>
+                    <div class="dimension-persona">Compass Holder</div>
+                    <div class="dimension-score">87%</div>
+                    <div class="dimension-description">
+                        Your future orientation is your highest dimension. You have clear goals, financial intentionality, courage, and resilience. You're not just hoping for what's next — you're building it. Your future is the most aligned part of your life right now.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE BOTTOM LINE -->
+        <div class="bottom-line">
+            <h3>The Bottom Line</h3>
+            <p><strong>You don't need advice — you need acknowledgment. This IS what alignment looks like at a senior level after 28 years in a demanding, emotionally intensive career.</strong></p>
+            <p>But alignment at 81% has one urgent vulnerability: the gap between how much you give and how much you restore. Your mission is intact. Your maintenance is suffering.</p>
+            <p><strong>At 81%, your biggest risk isn't failure. It's the slow erosion that happens when high achievers stop refueling at the same rate they output.</strong></p>
+        </div>
+
+        <!-- WHAT'S WORKING: STRENGTHS -->
+        <section class="section">
+            <h2 class="section-header">What's Working: Your Strengths</h2>
+            <p style="margin-bottom: 30px; color: #555;">You have <strong>two perfect scores</strong> and seven additional domains at 4.0 or above. Let's start here — because what you've built deserves to be seen before we talk about what needs attention.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Core Beliefs &amp; Identity</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Financial Security &amp; Intentionality</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Work &amp; Purpose</span>
+                    <span class="domain-score-badge strong">4.75</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Relationships &amp; Authenticity</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Learning &amp; Growth Orientation</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Goals &amp; Ambition</span>
+                    <span class="domain-score-badge strong">4.33</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Courage &amp; Resilience</span>
+                    <span class="domain-score-badge strong">4.33</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Self-Awareness &amp; Emotional Intelligence</span>
+                    <span class="domain-score-badge strong">4.2</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Gratitude</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Meaning &amp; Contribution</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>⭐ Core Beliefs &amp; Identity: What a Perfect 5.0 Means</h3>
+                <p>A perfect score here means you've done something genuinely rare — you've moved beyond the beliefs you inherited and the identities you built to survive, and arrived at something self-authored. You know who you are, and you live like it.</p>
+                <p>This is the foundation of authentic leadership. Every consistent decision, every relationship where you show up whole, every moment you didn't compromise when it would've been easier to — this is the source.</p>
+                <h4>How to Leverage This</h4>
+                <p>Your identity clarity is your anchor when everything else is turbulent. When habits slip or energy depletes, your sense of self doesn't. Use this as the foundation for rebuilding your physical practices — not because you "should," but because it's congruent with who you already are.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>⭐ Financial Security &amp; Intentionality: The Other Perfect Score</h3>
+                <p>A perfect score here means more than financial stability — it means financial alignment. You're not just managing money; you're making decisions with it that reflect who you are and where you're going.</p>
+                <p>Financial intentionality at this level creates a specific kind of freedom: the ability to make decisions based on values rather than fear. After 28 years in public education, that's not an accident — it's discipline.</p>
+                <h4>How to Leverage This</h4>
+                <p>Your financial clarity supports your courage. When you're considering bold moves — a new initiative, a boundary you need to set, a next chapter — your financial foundation means you're deciding from security, not scarcity.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Work &amp; Purpose (4.75): Your Superpower — With One Caution</h3>
+                <p>As Chief of DEI &amp; Student Support, your mission and your job are the same thing. When meaning and productivity overlap like this, motivation becomes intrinsic. You're driven by what matters, not what's expected.</p>
+                <p><strong style="color: #b87b2e;">The important caution:</strong> This strength is currently carrying more weight than it should. Because your work is meaningful, it's easy to let it compensate for the fact that your physical foundation is depleted. Your passion keeps you going — but it isn't a substitute for sleep, nutrition, and recovery.</p>
+            </div>
+        </section>
+
+        <!-- WHAT NEEDS ATTENTION -->
+        <section class="section">
+            <h2 class="section-header">What Needs Attention: Your Growth Edges</h2>
+            <p style="margin-bottom: 30px; color: #555;">Even at 81%, there are two areas where focused work will create the most momentum. You're not in crisis — but these need attention.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item needs-attention">
+                    <span class="domain-name">⚠️ Habits, Health &amp; Energy</span>
+                    <span class="domain-score-badge needs-attention">2.75</span>
+                </div>
+                <div class="domain-item" style="border-left-color: #E65100; background: #fff8f0;">
+                    <span class="domain-name">Self-Acceptance &amp; Forgiveness</span>
+                    <span class="domain-score-badge" style="color: #E65100;">3.5</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 1: Habits, Health &amp; Energy (2.75/5) ⚠️</h3>
+                <p><strong>This is your most urgent work.</strong> The gap between your 4.75 Work &amp; Purpose and your 2.75 Habits, Health &amp; Energy is the clinical signature of compensated depletion — where mission-driven motivation masks early burnout accumulation.</p>
+
+                <h4>Why This Matters</h4>
+                <ul>
+                    <li>Your brain runs on your body. Cognitive performance, emotional regulation, and decision-making are all degraded by sleep deprivation and poor energy management.</li>
+                    <li>As a Chief-level executive in a high-demand, high-emotion field, you're spending energy reserves that need active replenishment — not just time off.</li>
+                    <li>What's manageable at 45–54 becomes structurally harder to reverse at 55–64. This is the window to address it.</li>
+                </ul>
+
+                <h4>What's Happening</h4>
+                <p>You're not failing at self-care. You're succeeding at a job that makes self-care feel impossible. Chief-level DEI work in public education is emotionally intensive in a way that's hard to overstate. You absorb other people's pain as part of your function. You likely end every day at zero, or below it.</p>
+                <p>When stress outpaces recovery consistently, habits break — not because of weakness, but because the nervous system prioritizes survival. You're running on adrenaline and purpose. Both are real. Neither is sustainable indefinitely.</p>
+
+                <h4>This Week: Choose Your One Anchor</h4>
+                <p>Pick one and protect it for 14 days before adding anything else:</p>
+                <ul>
+                    <li><strong>Sleep:</strong> A consistent bedtime within the same 30-minute window, 7 nights a week.</li>
+                    <li><strong>Movement:</strong> 10 minutes of walking immediately after work — before re-engaging with anything else.</li>
+                    <li><strong>Nutrition:</strong> Eat breakfast before starting work. Every day. Non-negotiable.</li>
+                </ul>
+                <p>One anchor. Protected. Not because it's all you need — because it's where momentum starts.</p>
+
+                <h4>The Reality Check</h4>
+                <p>Without addressing this, even your strengths start to erode. Identity clarity under chronic exhaustion becomes rigidity. Relational authenticity under depletion becomes withdrawal. Financial intentionality under fatigue becomes avoidance. Your foundation is strong — but foundations need maintenance.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 2: Self-Acceptance &amp; Forgiveness (3.5/5)</h3>
+                <p>A score of 3.5 means you've done significant work here — but the work isn't finished. For someone who carries the emotional weight of a DEI leadership role — who daily witnesses harm, navigates resistance, and absorbs others' pain — unresolved resentment and incomplete self-forgiveness become a slow leak.</p>
+                <p>Under normal conditions, you manage it well. Under stress — and in your role, stress is the baseline — old material resurfaces. You recognize your patterns. But recognition hasn't yet become full release.</p>
+                <h4>This Week: Name It</h4>
+                <p>Write for 20 minutes: <em>What old pain or resentment still has a claim on my energy?</em> Not to solve it — just to name it. Naming what has power reduces the power it has.</p>
+            </div>
+        </section>
+
+        <!-- 90-DAY ACTION PLAN -->
+        <div class="action-plan">
+            <h3>Your 90-Day Action Plan</h3>
+            <p style="margin-bottom: 25px; color: #666;">You're already doing well. Here's how to optimize and prevent backsliding over the next 90 days.</p>
+
+            <div class="action-timeline">
+                <h4>Month 1: Optimization — Physical Foundation</h4>
+                <ul class="action-list">
+                    <li>Choose your one physical anchor (sleep, movement, or nutrition) and start it today</li>
+                    <li>Communicate one protective boundary to your team</li>
+                    <li>Write 20 minutes: <em>What still has a claim on my energy that I haven't fully released?</em></li>
+                    <li>Block 30 minutes daily on your calendar: "Restoration — Do Not Schedule"</li>
+                    <li>Schedule one appointment that's only for you (physical exam, wellness visit, or something purely restorative)</li>
+                </ul>
+            </div>
+
+            <div class="action-timeline">
+                <h4>Month 2: Integration — Depth and Sustainability</h4>
+                <ul class="action-list">
+                    <li>Maintain Month 1 anchor — it should feel normal by now</li>
+                    <li>Begin self-forgiveness work: identify one old wound and either write about it or bring it to a professional</li>
+                    <li>Explore: Where does meaning still feel alive in my work? Where does it feel like labor without return?</li>
+                    <li>Revisit one relationship that supports you — invest in it deliberately</li>
+                    <li>Add a second physical practice if anchor is stable</li>
+                </ul>
+            </div>
+
+            <div class="action-timeline">
+                <h4>Month 3: Acceleration — Scaling Sustainably</h4>
+                <ul class="action-list">
+                    <li>Physical foundation stable enough to stop tracking daily — it's just what you do now</li>
+                    <li>Revisit your Alignment Score themes: where have you grown? Where do you still want to go?</li>
+                    <li>Explore legacy: What is the lasting impact of 28 years in this work? Start articulating it.</li>
+                    <li>Schedule your Alignment Score reassessment (target: May 12, 2026)</li>
+                    <li>Write your own Final Word — what would you tell yourself from Month 1?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <section class="section">
+            <h2 class="section-header">Resources for Your Journey</h2>
+
+            <div class="recommendation-card">
+                <h3>For Habits, Health &amp; Energy</h3>
+                <div class="resource-section">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>"Why We Sleep"</strong> by Matthew Walker — the definitive case for why sleep is your highest-leverage intervention</li>
+                        <li><strong>"Atomic Habits"</strong> by James Clear — best evidence-based guide to building one anchor habit at a time</li>
+                        <li><strong>"Burnout"</strong> by Emily and Amelia Nagoski — written for high-achieving women in high-demand roles; directly relevant to your situation</li>
+                        <li><strong>"The Body Keeps the Score"</strong> by Bessel van der Kolk — for understanding why chronic stress lives in the body, not just the mind</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Apps &amp; Tools</h4>
+                    <ul>
+                        <li><strong>Oura Ring or WHOOP</strong> — sleep and recovery tracking without effort; makes the invisible visible</li>
+                        <li><strong>Headspace or Calm</strong> — 5–10 minute practices for micro-recovery between high-demand hours</li>
+                        <li><strong>Streaks (iOS)</strong> — dead-simple habit tracking for one anchor at a time</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Professional Support</h4>
+                    <ul>
+                        <li><strong>Functional medicine physician or integrative internist</strong> — if you want to assess sleep, hormones, and energy at a physiological level</li>
+                        <li><strong>Executive wellness coach</strong> — Psychology Today filter: "executive coaching" + "burnout"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>For Self-Acceptance &amp; Forgiveness</h3>
+                <div class="resource-section">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>"Self-Compassion"</strong> by Kristin Neff — evidence-based; directly addresses the self-forgiveness gap</li>
+                        <li><strong>"The Gifts of Imperfection"</strong> by Brené Brown — particularly useful for high-achievers who make self-forgiveness episodic</li>
+                        <li><strong>"Forgiveness Is a Choice"</strong> by Robert Enright — structured approach to forgiveness of self and others</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Professional Support</h4>
+                    <ul>
+                        <li><strong>EMDR therapy</strong> — effective for releasing old material that cognitive work hasn't fully resolved. Find via EMDRIA.org</li>
+                        <li><strong>Somatic therapist</strong> — useful if stress activates in the body rather than just the mind</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>For DEI Leadership Sustainability</h3>
+                <div class="resource-section">
+                    <h4>Books &amp; Research</h4>
+                    <ul>
+                        <li><strong>"The Emotional Tax"</strong> (Catalyst.org) — research on the cost of code-switching for Black women in leadership</li>
+                        <li><strong>HBR: "Diversity Fatigue Is Real"</strong> — resources on sustaining DEI work without self-destruction</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><strong>NADOHE</strong> — National Association of Diversity Officers in Higher Education; peer community doing exactly your work</li>
+                        <li><strong>CUPA-HR DEI community groups</strong> — shared experience and strategies for DEI leaders in education</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FREQUENTLY ASKED QUESTIONS -->
+        <section class="section">
+            <h2 class="section-header">Frequently Asked Questions</h2>
+            <div class="recommendation-card">
+
+                <div class="faq-item">
+                    <h4>"I scored 81%. Why does the 2.75 in Habits matter if everything else is strong?"</h4>
+                    <p>Because your strengths don't exist in isolation — they run on a biological substrate. Your identity clarity, relational authenticity, and future vision are all processed by a brain that runs on sleep, nutrition, and physical recovery.</p>
+                    <p>The 2.75 doesn't negate the 81%. But it tells you where your energy is quietly leaking. Addressing it doesn't mean you're broken — it means you're smart enough to protect what you've built.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"How do I build a habit when I'm already at capacity?"</h4>
+                    <p>You don't add a habit. You anchor one. Anchoring means choosing one thing that happens before everything else competes for the space — the first 10 minutes of morning, the 5 minutes before dinner, the moment you close your laptop.</p>
+                    <p>Start with one behavior so small that not doing it would feel like a choice, not a failure. When that's stable, you can add.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"Should I be further along than 77% in the present after 28 years?"</h4>
+                    <p>No — and that framing is worth examining. 77% is not "behind." For someone carrying the emotional weight of senior DEI leadership in a public institution, 77% in the present is evidence of extraordinary regulation, not failure.</p>
+                    <p>The more useful question: What's keeping me here, and is it within my control to change? The answer is yes — the physical maintenance gap is directly addressable.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"How do I know if I need therapy vs. coaching for the self-forgiveness work?"</h4>
+                    <p>Coaching works with the present and future, building toward goals. Therapy works with patterns rooted in the past, especially when those patterns activate under stress in ways that feel disproportionate or hard to shift through insight alone.</p>
+                    <p>If old material surfaces in ways that feel bigger than the present situation warrants, a therapist is the right tool. Many people at your level benefit from both.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"How often should I retake the Alignment Score?"</h4>
+                    <p>Every 90 days is the recommended rhythm. That's long enough for real behavioral change to show up in scores, but short enough to course-correct if you've drifted. Your next reassessment target: <strong>May 12, 2026</strong>.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>"What if my scores get worse on the next assessment?"</h4>
+                    <p>That's useful information, not failure. It usually means either you're being more honest now than before (very common — self-awareness increases with reflection), or life has genuinely shifted. Either way, you have clearer data to work with. The score isn't the goal. The alignment is.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- REMINDERS -->
+        <section class="section">
+            <h2 class="section-header">Reminders for Your Journey</h2>
+            <div class="reminder-grid">
+                <div class="reminder-card">
+                    <h4>You've Built Something Real</h4>
+                    <p>An 81% Alignment Score after 28 years in a field that actively resists what you're trying to do doesn't happen by accident. Take a moment to acknowledge that before moving to what's next.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Optimization Feels Different Than Repair</h4>
+                    <p>You're not fixing something broken. You're refining something that works. That requires discipline, not urgency. Be patient with the pace.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Your Recovery Is Part of Your Work</h4>
+                    <p>You cannot pour from empty indefinitely. Your recovery isn't selfishness — it's stewardship. It's how you stay in this work for another decade without becoming a casualty of it.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Boundaries Protect Excellence</h4>
+                    <p>At your level, you'll be asked to give more than your capacity. That will always be true. Saying no to the right things is professional competence. Protect your energy — not everything that's good deserves your yes.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Complacency Is Your Biggest Risk</h4>
+                    <p>At 81%, the risk isn't failure — it's drift. Keep asking: <em>Am I still moving toward what matters, or just moving well?</em></p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Legacy Becomes Relevant Now</h4>
+                    <p>You're at an age and stage where the question shifts from "how do I succeed?" to "what lasts?" Twenty-eight years of DEI work in education is a body of impact. What do you want the next chapter to build toward?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT STEPS -->
+        <section class="section">
+            <h2 class="section-header">Next Steps</h2>
+            <div class="next-steps-grid">
+                <div class="next-steps-card">
+                    <h4>This Week</h4>
+                    <ul>
+                        <li>Choose your one physical anchor and start it today</li>
+                        <li>Write 20 minutes: what still has a claim on my energy?</li>
+                        <li>Block 30 min/day labeled "Restoration — Do Not Schedule"</li>
+                        <li>Tell one person you're prioritizing your recovery. Ask them to check in.</li>
+                        <li>Name one thing on your plate you can stop, delegate, or defer</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Month</h4>
+                    <ul>
+                        <li>Anchor habit practiced 20+ days out of 30</li>
+                        <li>Book one appointment that's only for you</li>
+                        <li>Communicate one protective boundary and uphold it</li>
+                        <li>Explore professional support for self-forgiveness work if needed</li>
+                        <li>Complete one meaningful check-in: what's shifted, what hasn't</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Quarter</h4>
+                    <ul>
+                        <li>Physical practices stable and habitual — not effortful</li>
+                        <li>Self-forgiveness work actively engaged and showing movement</li>
+                        <li>Clarity on what lights you up vs. what you're enduring</li>
+                        <li>At least one resource from the Resources section engaged</li>
+                        <li>Reassessment scheduled: May 12, 2026</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- A FINAL WORD -->
+        <section class="section">
+            <h2 class="section-header">A Final Word</h2>
+            <div class="final-word">
+                <p><strong>Julie,</strong></p>
+                <p>You're at 81%. That means after 28 years of work that asks you to hold space for others' pain, navigate institutional resistance, and advocate for people who are often invisible to the systems meant to serve them — you have still built a life that is, by every measure, deeply aligned.</p>
+                <p>But here's what else I see: You're running the engine at full capacity without adequate maintenance cycles. Your work is meaningful. Your identity is clear. Your future is well-designed. And your physical foundation — the substrate that makes all of it possible — is running below spec.</p>
+                <p>This isn't a criticism. It's a pattern I've seen in every high-performing professional who cares deeply about their mission. The work expands to fill all available space because it's real and it matters. The self-care contracts because it feels less urgent. Until it isn't.</p>
+                <p><strong>Habits, Health &amp; Energy scored 2.75.</strong> This is your most important work right now. Not because everything else is wrong — it's not. But because your identity, your relationships, your future vision — they all run on a biology that needs rest, nutrition, and movement. One anchor. Protected. Starting this week.</p>
+                <p>You've been showing up for others for nearly three decades. With exceptional fidelity. I'm asking you to show up for yourself with the same consistency you bring to everything else.</p>
+
+                <div class="closing-quote">
+                    "Am I still moving toward what matters — or am I just moving well?"<br>
+                    That's the question the Steady Rebuilder carries. Keep asking it.
+                </div>
+
+                <p style="margin-bottom: 5px;"><strong>Coach Chris Hoffman</strong></p>
+                <p style="margin-bottom: 5px;">Alignment Psychiatry</p>
+                <p>chris@alignmentpsychiatry.com</p>
+
+                <div class="tagline">
+                    You're not just moving well. You're moving toward what matters. Keep showing up.
+                </div>
+            </div>
+        </section>
+
+    </div><!-- end .content -->
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <h3>Ready to Dive Deeper?</h3>
+        <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+        <p>Schedule a session to discuss your alignment journey and what comes next.</p>
+        <a href="mailto:chris@alignmentpsychiatry.com" class="cta-button">Book Your Strategy Call</a>
+        <p style="margin-top: 30px; font-size: 0.9rem;">
+            Coach Chris Hoffman<br>
+            Alignment Psychiatry<br>
+            chris@alignmentpsychiatry.com
+        </p>
+    </div>
+
+</div><!-- end .container -->
+</body>
+</html>
