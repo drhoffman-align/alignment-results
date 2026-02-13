@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerald M - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%); color: white; padding: 60px 40px; text-align: center; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; letter-spacing: 1px; }
+        .client-name { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; }
+        .header-meta { font-size: 0.95rem; opacity: 0.9; margin-top: 20px; }
+        .content { padding: 40px; }
+        .score-card { background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%); color: white; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
+        .overall-score { font-size: 5rem; font-weight: 700; line-height: 1; margin-bottom: 10px; }
+        .score-label { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; }
+        .persona-name { font-size: 2rem; font-weight: 600; margin-bottom: 20px; }
+        .persona-tagline { font-size: 1.1rem; opacity: 0.95; font-style: italic; line-height: 1.5; }
+        .dimensions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .dimension-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 25px; transition: all 0.3s ease; }
+        .dimension-card:hover { border-color: #D09038; box-shadow: 0 4px 12px rgba(208,144,56,0.2); }
+        .dimension-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+        .dimension-persona { font-size: 1.3rem; font-weight: 600; color: #6B2C3A; margin-bottom: 8px; }
+        .dimension-score { font-size: 2rem; font-weight: 700; color: #D09038; margin-bottom: 15px; }
+        .dimension-description { font-size: 0.95rem; color: #555; line-height: 1.5; }
+        .section { margin-bottom: 40px; }
+        .section-header { font-size: 1.8rem; color: #6B2C3A; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #D09038; }
+        .bottom-line { background: #fef9f0; border-left: 4px solid #D09038; padding: 25px; margin-bottom: 40px; border-radius: 4px; }
+        .bottom-line h3 { color: #6B2C3A; margin-bottom: 15px; }
+        .bottom-line p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .domain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .domain-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #f9f9f9; border-radius: 6px; border-left: 4px solid transparent; }
+        .domain-item.perfect { border-left-color: #4CAF50; background: #f1f8f4; }
+        .domain-item.strong { border-left-color: #D09038; }
+        .domain-item.developing { border-left-color: #E65100; background: #fff8f0; }
+        .domain-name { font-weight: 500; color: #333; }
+        .domain-score-badge { font-weight: 700; font-size: 1.2rem; min-width: 50px; text-align: right; }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .recommendation-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-bottom: 20px; }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin: 20px 0 10px; font-size: 1.1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 15px; line-height: 1.6; }
+        .recommendation-card ul { color: #555; padding-left: 25px; margin-bottom: 15px; }
+        .recommendation-card li { margin-bottom: 8px; }
+        .action-plan { background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%); border: 2px solid #D09038; border-radius: 8px; padding: 30px; margin-bottom: 30px; }
+        .action-plan h3 { color: #6B2C3A; margin-bottom: 20px; font-size: 1.6rem; }
+        .action-section { margin-bottom: 25px; }
+        .action-section h4 { color: #D09038; margin-bottom: 10px; font-size: 1.2rem; }
+        .action-list { list-style: none; padding: 0; }
+        .action-list li { padding: 10px 0 10px 30px; position: relative; color: #555; }
+        .action-list li:before { content: "☐"; position: absolute; left: 0; color: #D09038; font-size: 1.2rem; }
+        .resource-section { margin-bottom: 25px; }
+        .resource-section h4 { color: #D09038; margin-bottom: 12px; font-size: 1.05rem; }
+        .resource-section ul { padding-left: 20px; }
+        .resource-section li { color: #555; margin-bottom: 8px; font-size: 0.93rem; }
+        .next-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .next-steps-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; }
+        .next-steps-card h4 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.1rem; border-bottom: 2px solid #D09038; padding-bottom: 8px; }
+        .next-steps-card ul { list-style: none; padding: 0; }
+        .next-steps-card li { padding: 8px 0 8px 28px; position: relative; color: #555; font-size: 0.93rem; }
+        .next-steps-card li:before { content: "☐"; position: absolute; left: 0; color: #D09038; }
+        .reminder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .reminder-card { background: #fef9f0; border-top: 3px solid #D09038; border-radius: 6px; padding: 20px; }
+        .reminder-card h4 { color: #6B2C3A; margin-bottom: 10px; font-size: 1rem; }
+        .reminder-card p { font-size: 0.92rem; color: #555; line-height: 1.5; }
+        .final-word { background: linear-gradient(135deg, #fef9f0 0%, #fff 100%); border: 2px solid #6B2C3A; border-radius: 8px; padding: 40px; margin-bottom: 40px; }
+        .final-word p { color: #444; margin-bottom: 18px; line-height: 1.7; }
+        .final-word .closing-quote { font-style: italic; font-size: 1.15rem; color: #6B2C3A; border-left: 4px solid #D09038; padding-left: 20px; margin: 25px 0; }
+        .final-word .tagline { font-style: italic; color: #888; font-size: 0.95rem; text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+        .faq-item { border-bottom: 1px solid #eee; padding: 20px 0; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-item h4 { color: #6B2C3A; margin-bottom: 10px; font-size: 1.05rem; }
+        .faq-item p { color: #555; font-size: 0.95rem; margin-bottom: 8px; }
+        .footer { background: #6B2C3A; color: white; padding: 40px; text-align: center; }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .cta-button { display: inline-block; background: #D09038; color: white; padding: 15px 40px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 20px; transition: all 0.3s ease; }
+        .cta-button:hover { background: #b87b2e; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        @media print { body { background: white; } .container { box-shadow: none; } .cta-button { display: none; } }
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; } .header h1 { font-size: 2rem; } .client-name { font-size: 1.5rem; }
+            .content { padding: 20px; } .overall-score { font-size: 4rem; } .dimensions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>Your Alignment Score Results</h1>
+        <div class="client-name">Gerald M</div>
+        <div class="header-meta">
+            Personal Growth Guide &nbsp;|&nbsp; February 12, 2026<br>
+            Assessment: The Alignment Score &nbsp;|&nbsp; Coach: Chris Hoffman, Alignment Psychiatry
+        </div>
+    </div>
+
+    <div class="content">
+
+        <div class="score-card">
+            <div class="overall-score">86%</div>
+            <div class="score-label">Overall Alignment Score</div>
+            <div class="persona-name">The Purpose Pilot</div>
+            <div class="persona-tagline">
+                You're in the sweet spot: past resolved, present stable, future clarifying. The work now is about sharpening that vision. Confidence paired with precision becomes unstoppable. You're not hesitating — you're aiming.
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-header">Your Journey</h2>
+            <div class="dimensions">
+                <div class="dimension-card">
+                    <div class="dimension-label">PAST</div>
+                    <div class="dimension-persona">Phoenix</div>
+                    <div class="dimension-score">91%</div>
+                    <div class="dimension-description">
+                        You know who you are — and you live like it. You've moved beyond inherited beliefs and survival-based identities to define yourself on your own terms. Your story informs you without controlling you. That foundation of self-knowledge is what allows everything else to be built with confidence.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-label">PRESENT</div>
+                    <div class="dimension-persona">Flow Keeper</div>
+                    <div class="dimension-score">88%</div>
+                    <div class="dimension-description">
+                        Your present is one of the most balanced in this assessment. Emotional intelligence, relationships, habits, work alignment, gratitude, and growth orientation are all well-developed. You've built sustainable systems that support both performance and peace. This is what integrated daily living looks like.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-label">FUTURE</div>
+                    <div class="dimension-persona">Pathfinder</div>
+                    <div class="dimension-score">76%</div>
+                    <div class="dimension-description">
+                        Your future is coming into focus — but it isn't yet crystal clear. You have meaning (4.0) and financial grounding (4.0). What's still developing is the specific, measurable goal architecture and the boldness to pursue it fully. The destination is visible. The milestones need sharpening.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="bottom-line">
+            <h3>The Bottom Line</h3>
+            <p><strong>86% is elite-tier functioning.</strong> Your past is integrated, your present is stable and well-managed, and your sense of purpose is real. You are operating from a place of genuine wholeness — not just performance.</p>
+            <p>The work in front of you isn't repair. It's precision. You're not stuck — you're aiming. And the difference between 86% and 92% is specificity: getting granular about what you're building toward, and taking bolder steps toward it.</p>
+            <p><strong>Goals & Ambition (3.67) and Courage & Resilience (3.67) are your only scores below 4.0.</strong> They're not weaknesses — they're your next chapter.</p>
+        </div>
+
+        <section class="section">
+            <h2 class="section-header">What's Working: Your Strengths</h2>
+            <p style="margin-bottom: 30px; color: #555;">You have <strong>three scores at 5.0</strong> and seven more at 4.0 or above. At 86%, your profile is remarkably balanced — there are no collapsed domains, no crisis areas, no missing foundations.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Gratitude</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Core Beliefs &amp; Identity</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item perfect">
+                    <span class="domain-name">⭐ Temperament Awareness</span>
+                    <span class="domain-score-badge perfect">5.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Work &amp; Purpose</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Relationships &amp; Authenticity</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Learning &amp; Growth Orientation</span>
+                    <span class="domain-score-badge strong">4.5</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Self-Awareness &amp; Emotional Intelligence</span>
+                    <span class="domain-score-badge strong">4.4</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Habits, Health &amp; Energy</span>
+                    <span class="domain-score-badge strong">4.25</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Self-Acceptance &amp; Forgiveness</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Financial Security &amp; Intentionality</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+                <div class="domain-item strong">
+                    <span class="domain-name">Meaning &amp; Contribution</span>
+                    <span class="domain-score-badge strong">4.0</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>⭐ Gratitude (5.0): Your Present-Day Superpower</h3>
+                <p>A perfect Gratitude score means you've trained your nervous system to notice what's right without minimizing what's hard. Research shows this isn't naïve positivity — it's a practice that shifts brain activity away from threat-detection toward perspective and possibility. You feel grounded in reality while staying open to hope.</p>
+                <p>This is what creates the stability and steadiness that others likely experience when they're around you. After 28 years as an educator and now as Chief Academic Officer, that groundedness is both a personal asset and a leadership gift.</p>
+                <h4>How to Leverage This</h4>
+                <p>Gratitude at 5.0 is a buffer against the ambition anxiety that can accompany the precision work ahead. When goal-setting feels uncertain or bold action feels risky, your gratitude practice is what keeps you regulated and clear. Protect it intentionally — especially as you sharpen your future vision.</p>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>⭐ Core Beliefs &amp; Identity (5.0) + Temperament Awareness (5.0): Your Foundation</h3>
+                <p>Two perfect scores in your past dimension. You know who you are and how you're wired — and you live accordingly. This combination is extraordinarily rare: most people have one or the other, but rarely both at this level.</p>
+                <p>Identity clarity means your decisions are consistent with your values. Temperament awareness means you know what depletes and restores you, how you process stress, and how to work with your nature rather than against it. Together, they create what the research calls <em>authentic leadership</em> — the kind that sustains itself over decades rather than burning out.</p>
+                <h4>Why This Matters for Your Future Work</h4>
+                <p>The goal precision work ahead will require you to commit to specific directions and take bold steps. Having a 5.0 foundation in identity and temperament means you can do this without losing yourself. You know the difference between bold and reckless. You'll recognize when something is right for you versus just impressive.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-header">What Needs Attention: Your Growth Edge</h2>
+            <p style="margin-bottom: 30px; color: #555;">At 86%, your only scores below 4.0 are in the future dimension. These aren't failures — they're the frontier.</p>
+
+            <div class="domain-grid">
+                <div class="domain-item developing">
+                    <span class="domain-name">Goals &amp; Ambition</span>
+                    <span class="domain-score-badge developing">3.67</span>
+                </div>
+                <div class="domain-item developing">
+                    <span class="domain-name">Courage &amp; Resilience</span>
+                    <span class="domain-score-badge developing">3.67</span>
+                </div>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 1: Goals &amp; Ambition (3.67) — From Vision to Precision</h3>
+                <p>This is your most important growth area. A 3.67 here doesn't mean you lack ambition — you have Meaning & Contribution at 4.0 and 28 years of purposeful work. It means your ambition hasn't yet been translated into a specific, measurable, time-bound system that you're actively tracking.</p>
+                <p>At the Purpose Pilot level, this is the exact gap the persona names: <em>"What turns 'coming into focus' into crystal clear? Specificity."</em></p>
+                <h4>The CAO Legacy Question</h4>
+                <p>You're 45–54, you have a Doctorate, you're Chief Academic Officer with 28 years in education, two children, and a marriage. You're not building a career — you're building a legacy. The question that unlocks this score is: <strong>what specifically are you building toward in the next 3–5 years that you'd want to be remembered for?</strong></p>
+                <p>Not a job title. Not a salary. What educational outcome, what system change, what community impact — named specifically enough that you could tell when you'd achieved it.</p>
+                <h4>This Week</h4>
+                <ul>
+                    <li>Write one 90-day goal in a single sentence — specific and measurable, not "be healthier" but "walk 20 minutes, 4x/week"</li>
+                    <li>Write your 3-year legacy statement: what specifically do you want to have built?</li>
+                    <li>Block one hour per week labeled "Strategic Thinking — Do Not Schedule"</li>
+                </ul>
+            </div>
+
+            <div class="recommendation-card">
+                <h3>Priority 2: Courage &amp; Resilience (3.67) — Bold Action, Not Bigger Plans</h3>
+                <p>Courage & Resilience at 3.67 is interesting at 86% overall. You have confidence — your identity is solid, your purpose is clear, your relationships are strong. So what's holding the courage score here?</p>
+                <p>At this level, the courage gap is rarely about fear of failure. It's more often about the risk of commitment — choosing a specific direction means closing off others. For someone with a 5.0 Core Beliefs score and strong adaptability, committing fully to one bold trajectory can feel like narrowing rather than focusing.</p>
+                <h4>The Reframe</h4>
+                <p>Courage at this stage isn't about being fearless. It's about making a specific bet on yourself — taking one bold step toward your most important goal even when the outcome isn't guaranteed. Not all at once. One specific, visible step that others can see.</p>
+                <ul>
+                    <li>What's the one bold move you've been considering but not yet taking?</li>
+                    <li>What would you do if you knew it was likely to succeed?</li>
+                    <li>What's one small version of that you could do in the next 30 days?</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="action-plan">
+            <h3>Your 90-Day Action Plan</h3>
+            <p style="margin-bottom: 25px; color: #666;">Your foundation is strong. This plan is about precision and forward movement — not repair.</p>
+
+            <div class="action-section">
+                <h4>Month 1: Sharpen the Vision</h4>
+                <ul class="action-list">
+                    <li>Write your 90-day goal — one sentence, specific and measurable</li>
+                    <li>Write your 3-year legacy statement — what are you building that lasts?</li>
+                    <li>Block one hour per week for strategic thinking — protected, no meetings</li>
+                    <li>Identify one bold move you've been deferring — name it specifically</li>
+                    <li>Share your 90-day goal with one person who will hold you accountable</li>
+                </ul>
+            </div>
+
+            <div class="action-section">
+                <h4>Month 2: Take the First Bold Step</h4>
+                <ul class="action-list">
+                    <li>90-day goal at 30+ days — track weekly, adjust if needed</li>
+                    <li>Take the first concrete action toward the bold move you identified</li>
+                    <li>Review your legacy statement — does it still feel right? Get more specific</li>
+                    <li>Identify one professional relationship to deepen that supports your vision</li>
+                    <li>Mid-point check-in: what's moved? what's still sitting?</li>
+                </ul>
+            </div>
+
+            <div class="action-section">
+                <h4>Month 3: Build the Habit of Building</h4>
+                <ul class="action-list">
+                    <li>90-day goal: final sprint or completion — document what you learned</li>
+                    <li>Define your next 90-day goal before this one ends</li>
+                    <li>Bold move: second step taken or fully launched</li>
+                    <li>Legacy statement refined — specific enough to be measurable</li>
+                    <li>Schedule reassessment: May 12, 2026</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-header">Your Personalized Recommendations</h2>
+
+            <div class="recommendation-card">
+                <h3>For Goals, Ambition &amp; Future Precision</h3>
+                <p>Your Airtable action tip captured it well: <em>"Set one clear, achievable goal — something you can actually measure. Not 'get healthier,' but 'walk 15 minutes three times this week.' Momentum comes from completion, not perfection."</em></p>
+                <p>That principle scales to the legacy level. Not "improve student outcomes" but "implement X framework in Y schools by Z date with measurable impact on graduation rates." The specificity is what makes bold action possible — because you know exactly what you're aiming at.</p>
+                <div class="resource-section">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>"The 12 Week Year"</strong> by Brian Moran — 90-day goal execution framework; directly addresses the Goals/Ambition gap</li>
+                        <li><strong>"Essentialism"</strong> by Greg McKeown — for deciding which goals are actually worth committing to fully</li>
+                        <li><strong>"Atomic Habits"</strong> by James Clear — for translating vision into daily measurable behavior</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>For Courage &amp; Bold Action</h4>
+                    <ul>
+                        <li><strong>"The Courage to Be Disliked"</strong> by Kishimi & Koga — particularly useful for high-integrity leaders who defer bold moves out of relational consideration</li>
+                        <li><strong>"Dare to Lead"</strong> by Brené Brown — research-based framework for courageous leadership in high-stakes educational environments</li>
+                    </ul>
+                </div>
+                <div class="resource-section">
+                    <h4>Tools &amp; Practices</h4>
+                    <ul>
+                        <li><strong>Weekly Strategic Hour:</strong> One protected hour per week — no agenda, just thinking about where you're going and what's blocking it</li>
+                        <li><strong>OKR Framework (Objectives & Key Results):</strong> Google's goal system; excellent for CAO-level vision translation into measurable quarterly targets</li>
+                        <li><strong>Executive coach:</strong> A thinking partner specifically for legacy planning and bold move accountability — 1 session/month can shift Goals score significantly</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-header">Frequently Asked Questions</h2>
+            <div class="recommendation-card">
+                <div class="faq-item">
+                    <h4>"I scored 86%. What does that actually mean?"</h4>
+                    <p>It means you're in the top tier of integrated functioning. Your past is resolved, your present is stable, and your sense of purpose is real. You have three perfect scores and no collapsed domains. 86% reflects a person who has done the work — on themselves, their relationships, and their values — and it shows in how they move through life.</p>
+                    <p>The gap between 86% and 92%+ is entirely in the future dimension, and specifically in goal precision and bold action. These are the most exciting gaps to close — because the foundation to support them is already in place.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>"Why is my future (76%) lower than my past and present?"</h4>
+                    <p>Because future scores require something different than past integration or present management. They require you to name, specifically and publicly, what you're building toward — and then take measurable steps toward it. That level of commitment and specificity is harder than maintaining excellent daily systems.</p>
+                    <p>Your future dimension isn't low because something is wrong. It's lower because it's asking you to do the next level of work: not just living well, but building deliberately toward a defined legacy.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>"What does 'Purpose Pilot' mean for me practically?"</h4>
+                    <p>It means you're in the sweet spot that most people spend their lives trying to reach — past resolved, present stable, sense of purpose alive. The Purpose Pilot's specific work is precision: translating that purpose into a concrete trajectory with milestones you can measure and bold steps you can track.</p>
+                    <p>You're not waiting for clarity. You're doing the work of making clarity operational. That's the pilot's job — not just knowing the destination, but filing the flight plan.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>"When should I reassess?"</h4>
+                    <p>90 days is the right rhythm. Your target reassessment date is <strong>May 12, 2026</strong>. The primary metrics to watch: Goals & Ambition (targeting 4.0+) and Courage & Resilience (targeting 4.0+). If both move, your overall score likely reaches 89–92%.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-header">Reminders for Your Journey</h2>
+            <div class="reminder-grid">
+                <div class="reminder-card">
+                    <h4>86% Is the Starting Line for This Work</h4>
+                    <p>Not the finish line. You've built an exceptional foundation. Now you're building the next chapter on top of it. That's different from repair — it requires a different kind of energy.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Specificity Is Not Limitation</h4>
+                    <p>Committing to a specific goal doesn't close doors — it opens the right ones. Vague ambition spreads energy; specific goals concentrate it. Precision is a form of power.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Your Gratitude Grounds Your Courage</h4>
+                    <p>A 5.0 Gratitude score means you can take risks without losing your footing. When bold moves feel uncertain, your gratitude practice is the stabilizer. Use it consciously.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>28 Years Is a Body of Work Worth Naming</h4>
+                    <p>What you've built in education over 28 years deserves to be articulated as legacy — not just tenure. Name it. Write it down. It becomes the north star for everything next.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>Momentum Comes from Completion</h4>
+                    <p>One finished goal generates more confidence than ten ongoing ones. The habit of finishing is what builds the future you're describing. Start small. Finish it. Then go bigger.</p>
+                </div>
+                <div class="reminder-card">
+                    <h4>You're Aiming, Not Hesitating</h4>
+                    <p>The pause before the bold move isn't fear — it's aim. Trust that. And when the aim is clear enough, act. Don't let aiming become a substitute for moving.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-header">Next Steps</h2>
+            <div class="next-steps-grid">
+                <div class="next-steps-card">
+                    <h4>This Week</h4>
+                    <ul>
+                        <li>Write your 90-day goal — one specific sentence</li>
+                        <li>Write your 3-year legacy statement</li>
+                        <li>Name the one bold move you've been deferring</li>
+                        <li>Block one weekly strategic hour — starting this week</li>
+                        <li>Tell one person your 90-day goal</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Month</h4>
+                    <ul>
+                        <li>90-day goal tracked weekly for 30 days</li>
+                        <li>First step of bold move taken — however small</li>
+                        <li>Legacy statement specific enough to be measurable</li>
+                        <li>One resource from the list engaged</li>
+                        <li>Mid-month check-in: what moved? what stalled?</li>
+                    </ul>
+                </div>
+                <div class="next-steps-card">
+                    <h4>This Quarter</h4>
+                    <ul>
+                        <li>90-day goal complete — lessons documented</li>
+                        <li>Next 90-day goal already defined</li>
+                        <li>Bold move: visible, trackable, in motion</li>
+                        <li>Legacy framework clear and shared</li>
+                        <li>Reassessment: May 12, 2026</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-header">A Final Word</h2>
+            <div class="final-word">
+                <p><strong>Gerald,</strong></p>
+                <p>86% after 28 years in education — as a Chief Academic Officer, a father of two, a husband, and someone who has clearly done the inner work of knowing who he is — is not a number that requires qualification. It reflects something real: a life built with intention.</p>
+                <p>Your past is integrated. Your present is stable. Your gratitude is genuine. Your identity is solid. These aren't small things. Most people reach their mid-career without any of them fully in place.</p>
+                <p>What your scores are asking of you now is the work that comes after all of that: <strong>precision</strong>. Not more self-awareness — you have that. Not better habits — you have those too. What's next is the specific, named, measurable, bold vision of what you're building for the next chapter of your life.</p>
+                <p>Goals & Ambition at 3.67. Courage & Resilience at 3.67. Your two lowest scores. And also your most exciting ones — because they're sitting on top of everything else you've already built. The foundation is ready. The question is what you're going to build on it.</p>
+
+                <div class="closing-quote">
+                    "You're in the sweet spot: past resolved, present stable, future clarifying. Confidence paired with precision becomes unstoppable. You're not hesitating — you're aiming."<br>
+                    Now file the flight plan.
+                </div>
+
+                <p style="margin-bottom: 5px;"><strong>Coach Chris Hoffman</strong></p>
+                <p style="margin-bottom: 5px;">Alignment Psychiatry</p>
+                <p>chris@alignmentpsychiatry.com</p>
+
+                <div class="tagline">
+                    Reassessment Target: May 12, 2026 &nbsp;|&nbsp; Expected Range: 89–92%
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="footer">
+        <h3>Ready to Dive Deeper?</h3>
+        <p>Questions about your results? Ready to sharpen your vision and build the legacy you're describing?</p>
+        <p>Schedule a session to discuss your alignment journey and what precision looks like in practice.</p>
+        <a href="https://alignmentpsychiatry.com" class="cta-button">Book Your Strategy Call</a>
+        <p style="margin-top: 30px; font-size: 0.9rem;">
+            Coach Chris Hoffman<br>
+            Alignment Psychiatry<br>
+            dr.hoffman@alignmentpsychiatry.com
+        </p>
+    </div>
+
+</div>
+</body>
+</html>
