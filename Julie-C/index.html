@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julie C - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Julie C</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-02-11<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">81%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Steady Rebuilder</div>
+                <div class="personaDescription">You're in construction mode, and that's exactly where you should be. But here's the thing about rebuilders: you can fall into the trap of constant doing without ever celebrating progress. Build in rest — not as reward, but as strategy. Burnout doesn't announce itself; it accumulates. Your routines are your foundation, but flexibility keeps them sustainable. You're allowed to adjust the pace without losing the path.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Phoenix</div>
+                        <div class="dimensionPercentage">86%</div>
+                        <div class="dimensionOutputText">You know who you are—and you live like it. That clarity keeps your decisions consistent with your values, which is strongly linked to life satisfaction and psychological stability. You've moved beyond inherited beliefs and survival-based identities to define yourself on your own terms. This kind of self-definition is what allows real alignment. Your sense of self isn't rigid—it evolves—but it's rooted in something solid. That's the foundation of authentic leadership and meaningful relationships. Additionally, you've made meaningful progress in making peace with your past. You're learning to interpret your story rather than relive it, and you've begun the work of self-forgiveness. However, there are still moments—especially under stress—when old emotions or regrets resurface. You recognize your patterns and where they came from, but recognition hasn't yet become full release. You're in the middle space where transformation takes root. The work now is to continue reframing memory into meaning.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Tightrope Walker</div>
+                        <div class="dimensionPercentage">77%</div>
+                        <div class="dimensionOutputText">You've found (or built) work that connects to your values. When meaning and productivity overlap, motivation becomes intrinsic—you're driven by what matters, not just what's expected. This is the difference between being driven and being drained. Your work may not be perfect, but it aligns with who you are and what you care about. You show up as your authentic self, which makes even challenging days feel worthwhile. This is what sustainable success looks like. Additionally, your systems may not be supporting you right now. You might feel tired, scattered, or constantly behind—running on adrenaline rather than actual energy. When habits break down, it's usually because stress is outpacing recovery. Your brain needs rest to sustain clarity and creativity, but rest may feel impossible when you're in survival mode. The path forward isn't adding more—it's simplifying. Start with one anchor: sleep, movement, or eating regularly. Consistency beats intensity in building real resilience.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Holder</div>
+                        <div class="dimensionPercentage">87%</div>
+                        <div class="dimensionOutputText">You make money decisions with awareness and control. Financial intentionality is emotional regulation in another form—it replaces impulse with clarity and creates long-term confidence. You understand that financial structure isn't just practical; it's psychological safety. You know where your money goes, you plan for the future, and you make choices that align with your values. This doesn't mean you're wealthy—it means you're in control. That sense of agency reduces anxiety and creates space to focus on what matters beyond money.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 81% alignment score indicates strong overall life alignment with room for targeted improvement.</strong></p><p>Your greatest strength lies in Core Beliefs & Identity, Temperament Awareness, and Financial Security, where you've achieved maximum alignment at 5.00.</p><p><strong>Your most urgent opportunity is strengthening Habits, Health & Energy at 2.75, which could significantly boost your overall well-being.</strong></p>
+            </div>
+
+            <!-- What's Working -->
+            <section class="section">
+                <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+                <div class="domainGrid">
+                    <div class="domain-item perfect"><span class="domain-name">⭐ Core Beliefs & Identity</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Temperament Awareness</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Financial Security & Intentionality</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.75</span></div>
+<div class="domain-item strong"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge strong">4.33</span></div>
+<div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.33</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge strong">4.20</span></div>
+<div class="domain-item strong"><span class="domain-name">Gratitude</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Habits, Health & Energy</span><span class="domain-score-badge needs-attention">2.75</span></div>
+                </div>
+                
+            </section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    Your assessment reveals some important areas where focused attention could significantly enhance your overall well-being and life satisfaction. The challenges you're experiencing with self-acceptance and forgiveness from your past, current struggles with maintaining healthy habits and energy levels, and uncertainty about your sense of meaning and contribution represent interconnected psychological patterns that research shows can profoundly impact mental health and life fulfillment.
+
+Self-acceptance and forgiveness are foundational to psychological well-being because unresolved past experiences often create internal resistance that drains mental energy and affects present-moment functioning. Consider developing a daily self-compassion practice, perhaps through journaling exercises where you write to yourself as you would to a dear friend facing similar challenges. For your current habits and energy concerns, start with micro-changes rather than dramatic overhauls—research in behavioral psychology shows that small, consistent actions build sustainable momentum. Focus on one keystone habit like a 10-minute morning routine that combines movement, mindfulness, or nutrition. Regarding meaning and contribution, explore activities that align your natural strengths with service to others, as studies consistently show that purpose-driven engagement significantly boosts both energy levels and life satisfaction. The beautiful interconnection here is that as you practice self-forgiveness, you'll likely find more energy for healthy habits, which in turn will clarify your sense of purpose and contribution to the world around you.
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    WEEK 1: Set a daily 10-minute “Memory-to-Meaning” session after lunch; open a notebook, pick one recurring regret, and write 3 lines: “I experienced…,” “It taught me…,” “I now choose…;” place a hand on your chest and read it aloud once.
+
+WEEKS 2-4: Schedule two 20-minute sessions each week (e.g., Tue/Thu) to process one memory using the same template; after each, take a 10-minute walk repeating your new sentence; once weekly, record and send a 60-second voice note to a trusted person reading one reframe.
+
+MONTHS 2-3: Book biweekly 50-minute therapy/coaching or group sessions focused on narrative reframing; add one page per week to a “Meaning Map” folder and review it every Sunday for 10 minutes; at each month’s end, take a 30-minute release walk where you read your top 3 reframes aloud and file the pages.
+
+WEEK 1: Set a 7-day sleep anchor: lights out at 11:00 pm, wake at 7:00 am; set two phone alarms (wind-down 10:15 pm, bed 10:45 pm), charge your phone outside the bedroom at wind-down, and do a 5-minute stretch before bed.
+
+WEEKS 2-4: Keep the sleep anchor and add a 15-minute outdoor walk immediately after waking (no phone); set fixed meal times (breakfast 8:00 am, lunch 12:30 pm, dinner 6:30 pm) with recurring calendar reminders; every Sunday, spend 15 minutes planning the week’s bedtimes and meals.
+
+MONTHS 2-3: Maintain 80%+ consistency on sleep/walk/meals using a weekly checklist; do a 60-minute Sunday grocery shop and batch-cook two dinners; schedule two 15-minute off-screen recovery breaks into each workday (mid-morning, mid-afternoon) and one no-screens evening per week.
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    **3 BOOKS:**
+- I Forgive Me: When Self-Forgiveness is Necessary for the Journey of Healing by Tamika Jamison
+- Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones by James Clear
+- Man's Search for Meaning by Viktor Frankl
+
+**2 PRACTICES:**
+- Self-Compassion Meditation: Practice daily self-compassion by sitting comfortably, allowing natural breathing, and offering yourself the same kindness you would give a good friend. Include phrases like "May I be kind to myself" and "May I forgive my mistakes"
+- Forgiveness Journaling: Write daily about emotions and experiences related to forgiveness, including three things you're grateful for and reframing negative thoughts about yourself into compassionate perspectives
+
+**1-2 TOOLS:**
+- Productive - Daily Habit Tracker: A comprehensive app that helps build positive life-changing habits with effortless tracking, goal setting, and daily motivation features
+- Headspace: A meditation and mindfulness app offering guided sessions for forgiveness, self-compassion, and stress reduction to support mental wellness and personal growth
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
