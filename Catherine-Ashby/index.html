@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catherine Ashby - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%); color: white; padding: 60px 40px; text-align: center; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; letter-spacing: 1px; }
+        .client-name { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; }
+        .header-meta { font-size: 0.95rem; opacity: 0.9; margin-top: 20px; }
+        .content { padding: 40px; }
+        .score-card { background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%); color: white; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
+        .overall-score { font-size: 5rem; font-weight: 700; line-height: 1; margin-bottom: 10px; }
+        .score-label { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; }
+        .persona-name { font-size: 2rem; font-weight: 600; margin-bottom: 20px; }
+        .persona-tagline { font-size: 1.1rem; opacity: 0.95; font-style: italic; line-height: 1.5; }
+        .dimensions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .dimension-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 25px; transition: all 0.3s ease; }
+        .dimension-card:hover { border-color: #D09038; box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2); }
+        .dimension-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+        .dimension-persona { font-size: 1.3rem; font-weight: 600; color: #6B2C3A; margin-bottom: 8px; }
+        .dimension-score { font-size: 2rem; font-weight: 700; color: #D09038; margin-bottom: 15px; }
+        .dimension-description { font-size: 0.95rem; color: #555; line-height: 1.5; }
+        .bottom-line { background: #fef9f0; border-left: 4px solid #D09038; padding: 25px; margin-bottom: 40px; border-radius: 4px; }
+        .bottom-line h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.3rem; }
+        .bottom-line p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .section { margin-bottom: 40px; }
+        .section-header { font-size: 1.8rem; color: #6B2C3A; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #D09038; }
+        .domain_grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .domain-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #f9f9f9; border-radius: 6px; border-left: 4px solid transparent; }
+        .domain-item.perfect { border-left-color: #4CAF50; background: #f1f8f4; }
+        .domain-item.strong { border-left-color: #D09038; background: #fef9f0; }
+        .domain-item.developing { border-left-color: #E65100; background: #fff8f0; }
+        .domain-item.needs-attention { border-left-color: #f44336; background: #fff3f3; }
+        .domain-name { font-weight: 500; color: #333; font-size: 0.95rem; }
+        .domain-score-badge { font-weight: 700; font-size: 1.2rem; min-width: 50px; text-align: right; }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+        .recommendation-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-bottom: 20px; }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+        .detailed_recommendations { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-bottom: 20px; }
+        .detailed_recommendations h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .detailed_recommendations h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .detailed_recommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailed_recommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailed_recommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+        .action_plan { background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%); border: 2px solid #D09038; border-radius: 8px; padding: 30px; margin-bottom: 30px; }
+        .action_plan h4 { color: #D09038; margin-bottom: 10px; margin-top: 20px; font-size: 1.1rem; }
+        .action_plan h4:first-child { margin-top: 0; }
+        .action_plan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .action_plan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .action_plan ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resource_list { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-bottom: 20px; }
+        .resource_list h4 { color: #D09038; margin-bottom: 10px; margin-top: 20px; font-size: 1rem; font-weight: 600; }
+        .resource_list h4:first-child { margin-top: 0; }
+        .resource_list p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resource_list ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resource_list ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resource_list strong { color: #333; }
+        .footer { background: #6B2C3A; color: white; padding: 40px; text-align: center; }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .cta-button { display: inline-block; background: #D09038; color: white; padding: 15px 40px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 20px; }
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .header h1 { font-size: 2rem; }
+            .client-name { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .overall-score { font-size: 4rem; }
+            .dimensions { grid-template-columns: 1fr; }
+            .domain_grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Your Alignment Score Results</h1>
+            <div class="client-name">Catherine Ashby</div>
+            <div class="header-meta">Personal Growth Guide | <br>Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry</div>
+        </div>
+        <div class="content">
+            <div class="score-card">
+                <div class="overall-score">78%</div>
+                <div class="score-label">Overall Alignment Score</div>
+                <div class="persona-name">Purpose Pilot</div>
+                <div class="persona-tagline">You're in the sweet spot: past resolved, present stable, future clarifying. The work now is about sharpening that vision. What turns 'coming into focus' into crystal clear? Specificity. Get granular about what you're building toward — not just the destination, but the milestones. Your confidence is real, but confidence paired with precision becomes unstoppable. Don't rush this phase. You're not hesitating — you're aiming.</div>
+            </div>
+            <section class="section">
+                <h2 class="section-header">Your Journey</h2>
+                <div class="dimensions">
+                    <div class="dimension-card">
+                        <div class="dimension-label">PAST</div>
+                        <div class="dimension-persona">Phoenix</div>
+                        <div class="dimension-score">84%</div>
+                        <div class="dimension-description">Your 84% Past score as a Phoenix reveals remarkable integration—you've done the deep work to transform your history into wisdom rather than letting it control you. Your strength in Temperament Awareness shows you've learned to honor your natural wiring, while Self-Acceptance & Forgiveness represents your growth edge for even deeper healing.</div>
+                    </div>
+                    <div class="dimension-card">
+                        <div class="dimension-label">PRESENT</div>
+                        <div class="dimension-persona">Flow Keeper</div>
+                        <div class="dimension-score">81%</div>
+                        <div class="dimension-description">You've built something remarkable in your present life, with strong gratitude practices and self-awareness creating genuine emotional stability. The one area pulling at your energy is navigating authenticity in relationships—addressing this pattern of performing in certain spaces could unlock even more of the flow you've already created.</div>
+                    </div>
+                    <div class="dimension-card">
+                        <div class="dimension-label">FUTURE</div>
+                        <div class="dimension-persona">Pathfinder</div>
+                        <div class="dimension-score">65%</div>
+                        <div class="dimension-description">With a Future score of 65%, you're a Pathfinder with clear purpose-driven direction through your strong Meaning & Contribution. However, your path forward is being undermined by financial anxiety—building one simple financial system would provide the emotional safety and clarity needed to fully step into the confident future your meaningful work is already pointing toward.</div>
+                    </div>
+                </div>
+            </section>
+            <div class="bottom-line">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your alignment score of 78% indicates you're in a strong position with solid foundations across most life areas, though there's meaningful room for growth.</strong></p>
+                <p>Your greatest strength lies in Temperament Awareness and Gratitude, where you demonstrate exceptional self-understanding and appreciation for life's positives.</p>
+                <p><strong>Your most urgent opportunity is Financial Security, which requires immediate attention to support your overall life alignment.</strong></p>
+            </div>
+            <section class="section">
+                <h2 class="section-header">What's Working: Your Strengths</h2>
+                <div class="domain_grid">
+                    <div class="domain-item perfect"><span class="domain-name">⭐ Temperament Awareness</span><span class="domain-score-badge perfect">5.00</span></div>
+                    <div class="domain-item perfect"><span class="domain-name">⭐ Gratitude</span><span class="domain-score-badge perfect">5.00</span></div>
+                    <div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.75</span></div>
+                    <div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.50</span></div>
+                    <div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.25</span></div>
+                    <div class="domain-item strong"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge strong">4.20</span></div>
+                    <div class="domain-item strong"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge strong">4.00</span></div>
+                    <div class="domain-item developing"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge developing">3.67</span></div>
+                    <div class="domain-item developing"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge developing">3.67</span></div>
+                    <div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.63</span></div>
+                    <div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.50</span></div>
+                    <div class="domain-item developing"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge developing">3.00</span></div>
+                    <div class="domain-item needs-attention"><span class="domain-name">⚠️ Financial Security & Intentionality</span><span class="domain-score-badge needs-attention">2.50</span></div>
+                </div>
+                <div class="recommendation-card">
+                    <h3>Temperament Awareness (5.00/5)</h3>
+                    <p>Your perfect score in temperament awareness reveals that you have exceptional insight into your natural behavioral patterns, emotional triggers, and communication style. This deep self-knowledge allows you to navigate complex interpersonal situations with remarkable skill and adapt your approach based on what each situation requires.</p>
+                    <h4>Why This Matters For You</h4>
+                    <p>As an Assistant Superintendent managing school and community relations, your ability to understand and work with different temperaments is invaluable when mediating between diverse stakeholders—from board members to parents to staff. At this stage of your career, this strength positions you as a trusted leader who can bridge communication gaps and build consensus across varied groups.</p>
+                    <h4>How to Leverage This</h4>
+                    <p>Use your temperament awareness to create a "stakeholder communication map" that identifies the preferred communication styles of key community leaders, board members, and staff. This will allow you to tailor your messaging and approach for maximum impact in critical conversations and presentations.</p>
+                </div>
+                <div class="recommendation-card">
+                    <h3>Gratitude (5.00/5)</h3>
+                    <p>Your perfect gratitude score indicates that you consistently recognize and appreciate the positive aspects of your work and relationships, even during challenging times. This perspective helps you maintain optimism and energy while also making others feel valued and acknowledged for their contributions.</p>
+                    <h4>Why This Matters For You</h4>
+                    <p>In your communications role during a time when public education faces significant scrutiny, your genuine gratitude serves as a powerful tool for building community support and staff morale. Your ability to highlight positive developments and celebrate achievements helps counter negative narratives and maintains stakeholder engagement.</p>
+                    <h4>How to Leverage This</h4>
+                    <p>Establish a monthly "gratitude spotlight" communication series where you publicly recognize specific contributions from teachers, staff, students, and community partners. This will amplify your natural gratitude while systematically building positive relationships and community goodwill.</p>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-header">What Needs Attention</h2>
+                <div class="recommendation-card">
+                    <h3>Financial Security & Intentionality (2.50/5)</h3>
+                    <p>Your financial foundation needs immediate attention, which is creating underlying stress that may be affecting other areas of your life. As someone in educational leadership, you understand the importance of planning and systems, yet your financial intentionality isn't reflecting that same strategic approach.</p>
+                    <h4>Why This Matters For You</h4>
+                    <p>At 45-54, you're in a critical decade for retirement planning and financial security. In your role managing school and community relations, financial stress can undermine your leadership effectiveness and decision-making clarity.</p>
+                    <h4>Start Here This Week</h4>
+                    <p>Schedule a 2-hour financial review session to list all accounts, debts, and monthly expenses, then identify one specific area where you can automate savings or reduce unnecessary spending.</p>
+                </div>
+                <div class="recommendation-card">
+                    <h3>Goals & Ambition (3.00/5)</h3>
+                    <p>Your goal-setting and ambition are at a crossroads, suggesting you may be coasting rather than actively pursuing meaningful objectives. This disconnect between your high performance in other areas and your goal clarity indicates untapped potential waiting to be channeled.</p>
+                    <h4>Why This Matters For You</h4>
+                    <p>As an Assistant Superintendent, your ability to set and achieve ambitious goals directly impacts your school community's success. At your career stage, clear personal and professional goals are essential for continued growth and fulfillment.</p>
+                    <h4>Start Here This Week</h4>
+                    <p>Write down three specific goals you want to achieve in the next 90 days—one personal, one professional, and one related to your community impact—and identify the first action step for each.</p>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-header">Your Personalized Recommendations</h2>
+                <div class="detailed_recommendations">
+                    <p>Your alignment pattern reveals someone who has done significant inner work and carries deep wisdom from your experiences, yet you're navigating a tension between where you've been and where you're headed. With strong foundations in self-awareness and purpose, you're operating from a place of genuine authenticity in your professional role, but there's a gap between your clear sense of meaning and the practical structures needed to fully support your future vision.</p>
+                    <p>Your lowest scoring areas — financial intentionality, goal clarity, and relationship authenticity — represent the bridge between your well-developed inner world and the external momentum you're seeking. Research shows that when we have strong self-awareness but struggle with implementation systems, it's often because we're trying to build forward without the scaffolding that matches our values. These aren't weaknesses to fix, but rather the specific areas where focused attention will unlock the energy you already possess.</p>
+                    <p>Given the solid foundation you've built in understanding yourself and your purpose, working with a coach could help translate that clarity into consistent action systems. This appears to be more about performance optimization than foundational healing. The gap between your inner alignment and outer structures is exactly where coaching creates the most momentum, helping you build sustainable systems that match your values.</p>
+                    <ul>
+                        <li>Schedule a monthly financial review session where you align spending decisions with your stated values and future goals, tracking not just numbers but how each choice supports your vision</li>
+                        <li>Create a weekly relationship check-in practice — spend 10 minutes reflecting on one meaningful conversation you had and one authentic moment you shared, building your comfort with deeper connection</li>
+                        <li>Break your largest future goal into quarterly milestones with specific monthly actions, then schedule these actions like appointments rather than hoping motivation will carry you</li>
+                        <li>Establish a simple daily practice of asking "What's one small step toward my future self?" and take that action before checking email or social media</li>
+                        <li>Set up automatic transfers to align your money with your priorities — even small amounts create psychological momentum toward financial intentionality</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-header">Your Action Plan</h2>
+                <div class="action_plan">
+                    <h4>Past: Self-Acceptance & Forgiveness</h4>
+                    <p>Your Past foundation is strong — keep doing what's working.</p>
+                    <h4>Present: Relationships & Authenticity</h4>
+                    <p><strong>Week 1:</strong> On Wednesday by 3 p.m., send one honest, low-stakes message to a trusted colleague using: "Heads up—I prefer we review drafts 24 hours before release so I can do my best work."</p>
+                    <p><strong>Weeks 2-4:</strong> Each Thursday, say one clear sentence in a meeting starting with "A concern I see is…" and stop there.</p>
+                    <p><strong>Months 2-3:</strong> At 11:30 a.m. every Friday, send one candid stakeholder note (email or Slack) starting with "To be transparent, here's what I know and what I don't."</p>
+                    <h4>Future: Financial Security & Intentionality</h4>
+                    <p><strong>Week 1:</strong> At 10 a.m. Saturday, enter every bill with its amount and due date into a new Google Sheet named "Money Map."</p>
+                    <p><strong>Weeks 2-4:</strong> Every Sunday at 5 p.m., categorize the last 7 days of transactions in the sheet as Needs, Wants, or Savings.</p>
+                    <p><strong>Months 2-3:</strong> In your bank app today, set a recurring $25 transfer every Friday from checking to savings.</p>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-header">Recommended Resources</h2>
+                <div class="resource_list">
+                    <h4>Books</h4>
+                    <ul>
+                        <li><strong>Set Boundaries, Find Peace</strong> by Nedra Glover Tawwab — This book directly addresses the challenge of showing up authentically in relationships while managing the tendency to perform or edit yourself around others.</li>
+                        <li><strong>Get Good with Money</strong> by Tiffany Aliche — A practical approach to building financial clarity and systems that transforms money anxiety into confidence through simple, achievable steps.</li>
+                    </ul>
+                    <h4>Practices</h4>
+                    <ul>
+                        <li><strong>Authenticity Check-ins</strong> — Before entering social or professional situations, pause and ask yourself "What part of me am I tempted to hide here?" then consciously choose to share one genuine thought or feeling.</li>
+                        <li><strong>Weekly Money Visibility</strong> — Spend 15 minutes every Sunday reviewing where your money went that week without judgment, simply building awareness of your spending patterns.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><strong>Copilot</strong> — A money tracking app that automatically categorizes your spending and shows clear patterns, available at copilot.money.</li>
+                        <li><strong>YNAB (You Need A Budget)</strong> — A budgeting system that helps you assign every dollar a purpose before you spend it, creating the financial structure that reduces money anxiety at youneedabudget.com.</li>
+                    </ul>
+                    <h4>Professional Support</h4>
+                    <ul>
+                        <li><strong>Therapy for Authenticity and Money Patterns</strong> — A therapist who specializes in relationship dynamics and financial anxiety can help you understand the deeper patterns behind impression management and money avoidance, giving you tools to show up more genuinely in all areas. Find therapists at psychologytoday.com/us/therapists or explore affordable options at openpathcollective.org.</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey and transition planning.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="cta-button">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">Coach Chris Hoffman<br>Alignment Psychiatry<br>dr.hoffman@alignmentpsychiatry.com</p>
+        </div>
+    </div>
+</body>
+</html>
