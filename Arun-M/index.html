@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arun M - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Arun M</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-02-25<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">73%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Resilient Drifter</div>
+                <div class="personaDescription">You've got the engine running and the balance to stay upright — but no GPS. Here's the move: stop waiting for clarity to arrive and start creating it through action. Pick a direction that feels interesting and move toward it for 90 days. Not forever. Just long enough to gather data. Drifting isn't the problem — drifting without curiosity is. You're stronger than you think, and that strength deserves a destination.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Phoenix</div>
+                        <div class="dimensionPercentage">97%</div>
+                        <div class="dimensionOutputText">At 97%, your Phoenix persona reveals remarkable integration of your past experiences—you've clearly done significant inner work to transform challenges into wisdom rather than letting them control you. Your strongest foundation lies in Core Beliefs & Identity, showing you've moved beyond inherited patterns to define yourself authentically, which creates the solid ground for your 73% overall alignment. Since your Past Lowest Domain description is blank, this indicates no meaningful gap requiring attention—instead, your exceptional past integration serves as a powerful foundation for continued growth in other dimensions.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Tightrope Walker</div>
+                        <div class="dimensionPercentage">75%</div>
+                        <div class="dimensionOutputText">You have a solid foundation with your growth mindset and strong sense of identity driving you forward, but your brain's natural tendency to scan for problems is creating unnecessary tension in your daily experience. Right now, gratitude feels like the heaviest lift—your nervous system has learned to stay vigilant, making it harder to notice what's actually working in your life. Training your brain to see balance alongside the broken will help you function with less internal friction and more sustainable energy.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Spinner</div>
+                        <div class="dimensionPercentage">49%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 49%, you're experiencing the classic "Compass Spinner" pattern where your exceptional courage and resilience (your highest domain) gives you the strength to face challenges, but your financial foundation remains unclear and anxiety-provoking, keeping you in reactive mode rather than building toward your bigger vision. Your ability to act despite fear is remarkable, yet without addressing your Financial Security & Intentionality (your lowest domain at 1.00), you'll continue feeling stuck between having the courage to move forward and lacking the practical foundation to build sustainably toward what matters most. The unlock lies in creating one simple financial system—whether tracking expenses or automating savings—which will transform your natural resilience into forward momentum rather than just survival strength.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 73% alignment score indicates you're in a moderate alignment zone - you have solid foundations in place but significant gaps are holding you back from thriving.</strong></p><p>Your greatest strength lies in Core Beliefs & Identity and Learning & Growth, where you've achieved perfect 5.0 scores, showing exceptional clarity about who you are and a strong commitment to personal development.</p><p><strong>Your most urgent opportunity is Financial Security at just 1.0/5 - addressing your financial foundation is critical for overall life stability and peace of mind.</strong></p>
+            </div>
+
+            <!-- What's Working -->
+            <section class="section">
+                <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+                <div class="domainGrid">
+                    <div class="domain-item perfect"><span class="domain-name">⭐ Core Beliefs & Identity</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Temperament Awareness</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Learning & Growth Orientation</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge strong">4.75</span></div>
+<div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.75</span></div>
+<div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.67</span></div>
+<div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.75</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge developing">3.60</span></div>
+<div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.25</span></div>
+<div class="domain-item developing"><span class="domain-name">Gratitude</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Meaning & Contribution</span><span class="domain-score-badge needs-attention">2.00</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Goals & Ambition</span><span class="domain-score-badge needs-attention">1.67</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Financial Security & Intentionality</span><span class="domain-score-badge needs-attention">1.00</span></div>
+                </div>
+                <div class="recommendation-card">
+<h3>Core Beliefs & Identity (5.00/5)</h3>
+<p>Your perfect score reveals that you have achieved exceptional clarity about who you are at your core and what you stand for. You possess an unwavering sense of your fundamental values and beliefs, which serves as a reliable compass for decision-making across all areas of your life.</p>
+<h4>Why This Matters For You</h4>
+<p>This rock-solid foundation of self-knowledge provides you with remarkable consistency and authenticity in your interactions and choices. Having this level of clarity about your identity means you're less likely to be swayed by external pressures or fall into the trap of living according to others' expectations.</p>
+<h4>How to Leverage This</h4>
+<p>Use your strong sense of identity as a decision-making filter by explicitly asking yourself "Does this align with who I am and what I believe?" before making important commitments or changes. This will help you maintain authenticity while avoiding opportunities that don't serve your true self.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Temperament Awareness (5.00/5)</h3>
+<p>Your perfect score indicates you have developed exceptional understanding of your natural temperament, including your energy patterns, communication style, and optimal working conditions. You've mastered the art of recognizing and honoring your innate preferences rather than fighting against them.</p>
+<h4>Why This Matters For You</h4>
+<p>This deep self-awareness allows you to structure your environment and relationships in ways that naturally energize rather than drain you. You can anticipate your needs and reactions, leading to more effective communication and reduced stress in both personal and professional settings.</p>
+<h4>How to Leverage This</h4>
+<p>Share your temperament insights with key people in your life by explaining your optimal conditions for productivity, communication preferences, and energy management needs. This proactive communication will help others understand how to interact with you most effectively.</p>
+</div>
+            </section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Goals & Ambition (1.67/5)</h3>
+<p>Your extremely low score in this area suggests you may be struggling with setting clear direction for your future or feeling disconnected from meaningful aspirations. This disconnect between your strong self-awareness and lack of goal clarity is creating a significant gap in your personal development.</p>
+<h4>Why This Matters For You</h4>
+<p>Without clear goals and ambition, even your excellent self-knowledge and growth mindset can't reach their full potential. You're essentially driving with exceptional skills but no destination in mind.</p>
+<h4>Start Here This Week</h4>
+<p>Write down three things you genuinely want to achieve in the next 12 months, no matter how small or large. Focus on what excites you personally, not what others expect of you.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Financial Security & Intentionality (1.00/5)</h3>
+<p>This critical score indicates significant challenges with financial planning, budgeting, or intentional money management. Your financial foundation may be unstable or you might be avoiding financial responsibility altogether, which creates underlying stress that impacts other life areas.</p>
+<h4>Why This Matters For You</h4>
+<p>Financial insecurity creates a constant undercurrent of anxiety that undermines your otherwise strong emotional intelligence and self-awareness. Building financial stability will free up mental energy for pursuing your other strengths.</p>
+<h4>Start Here This Week</h4>
+<p>Track every dollar you spend for the next seven days without judgment. Simply observe your spending patterns to create awareness before making any changes.</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>Your scores reveal someone who has done remarkable work processing your past — you've achieved an extraordinary level of self-acceptance and clarity about who you are. You're navigating the present with solid awareness, though it requires constant attention and energy. The challenge lies in your relationship with the future, where uncertainty about goals and financial direction is creating significant stress and making it difficult to move forward with confidence.</p>
+
+<p>Your lowest scoring areas — goals, financial security, and meaning — aren't weaknesses to fix, but rather the precise places where focused attention will unlock the most momentum. Research shows that when we lack clear direction, our brains default to threat-detection mode, which explains why the future feels overwhelming despite your strong foundation. These areas matter because they're the bridge between your hard-won self-knowledge and actually building the life you want.</p>
+
+<p>Given how much foundational work you've already done, this feels like a performance gap rather than something deeper. A coach could help you translate all that self-awareness into concrete action and consistent progress. The clarity is there — it's the execution system that needs attention.</p>
+
+<ul>
+<li>Set aside 20 minutes this week to write down three specific things you want to accomplish in the next 90 days, then break each one into the smallest possible first step</li>
+<li>Track your spending for two weeks without changing anything — just observe where your money goes to create awareness before making any changes</li>
+<li>Schedule one 15-minute conversation with someone whose career or financial approach you respect, asking them one specific question about how they made a particular decision</li>
+<li>Each evening, write down one thing that felt meaningful about your day, no matter how small — this builds the neural pathway between daily actions and larger purpose</li>
+<li>Choose one financial goal (even something small like saving $200) and set up an automatic transfer to make it happen without relying on willpower</li>
+</ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4>Past: Self-Acceptance & Forgiveness</h4>
+<p>Your Past foundation is strong — keep doing what's working.</p>
+
+<h4>Present: Gratitude</h4>
+<p><strong>Week 1:</strong> Each night at 9:00 pm, write one sentence in your Notes app starting “Today I’m glad that…”.</p>
+<p><strong>Weeks 2-4:</strong> At the same time, add one sentence naming a body cue you feel as you write (e.g., “my jaw loosened”).</p>
+<p><strong>Months 2-3:</strong> Every Sunday at 5:00 pm, star three entries from the past week that helped you feel steadier.</p>
+
+<h4>Future: Financial Security & Intentionality</h4>
+<p><strong>Week 1:</strong> Saturday at 10:00 am, open a Google Sheet titled “Money Map” and list each account and bill with its due date and minimum amount; if several areas keep feeling heavy even as you start this, a psychiatrist can help untangle what’s happening across systems — it works best as an ongoing conversation.</p>
+<p><strong>Weeks 2-4:</strong> Every Tuesday at 7:00 pm, spend 10 minutes updating current balances in that sheet.</p>
+<p><strong>Months 2-3:</strong> On the 1st of next month at 9:00 am, set up an automatic $25 weekly transfer to savings in your bank app.</p>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<li><strong>Get Good with Money</strong> by Tiffany Aliche — This book provides a clear, step-by-step system for building financial security from the ground up, perfect for transforming financial overwhelm into actionable clarity.</li>
+<li><strong>The 12 Week Year</strong> by Brian Moran — This approach breaks down ambitious goals into manageable 12-week cycles, helping you build momentum when long-term planning feels overwhelming.</li>
+</ul>
+
+<h4>Practices</h4>
+<ul>
+<li><strong>Daily Financial Check-In</strong> — Spend 5 minutes each morning reviewing yesterday's spending and today's financial priorities to build awareness without judgment.</li>
+<li><strong>Three Good Things</strong> — Each evening, write down three things that went well or didn't go wrong that day to retrain your brain to notice stability alongside problems.</li>
+</ul>
+
+<h4>Tools</h4>
+<ul>
+<li><strong>Copilot Money</strong> — A comprehensive money tracking app that automatically categorizes spending and tracks investments, available at copilot.money and on iOS/Android app stores.</li>
+<li><strong>YNAB (You Need A Budget)</strong> — A budgeting system that helps you assign every dollar a job before you spend it, creating the financial structure that reduces anxiety through clarity.</li>
+</ul>
+
+<h4>Professional Support</h4>
+<ul>
+<li><strong>Financial Therapy for Money Anxiety</strong> — A therapist who specializes in financial psychology can help you understand the emotional patterns behind money avoidance and build healthier financial relationships. Find therapists at psychologytoday.com/us/therapists or explore affordable options at openpathcollective.org.</li>
+</ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
