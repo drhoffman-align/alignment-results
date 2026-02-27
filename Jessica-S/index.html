@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica S - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Jessica S</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-02-27<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">59%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Directionless Keeper</div>
+                <div class="personaDescription">You're holding everything together, and that takes strength. But managing chaos isn't the same as building toward something. The lessons from your past are valuable — use them to filter what actually matters. Write down everything you're currently managing. Then ask: which of these moves me toward a life I want? Which are just momentum? You've proven you can keep plates spinning. Now prove you can choose which plates deserve your hands.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Historian</div>
+                        <div class="dimensionPercentage">75%</div>
+                        <div class="dimensionOutputText">Your 75% Past score as a Historian shows you've done significant work integrating your history, with Core Beliefs & Identity as your strongest foundation—you know who you are and live from that clarity. While you've made meaningful progress in Self-Acceptance & Forgiveness, there's still some unfinished business where old emotions resurface under stress, creating tension between the solid identity you've built and the complete peace you're still cultivating. This level of integration, combined with your 59% Overall Alignment Score, positions you well to continue transforming remaining memories into meaning.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Juggler</div>
+                        <div class="dimensionPercentage">57%</div>
+                        <div class="dimensionOutputText">Your present life feels effortful right now, with meaningful work being your anchor while growth feels threatening rather than energizing. You're avoiding the discomfort that comes with learning and stretching yourself, which keeps you stuck in patterns that feel safe but leave you stagnant. When this many areas feel heavy at once, getting professional support can help your brain function the way it's meant to—a psychiatrist is specifically trained to understand what's happening and find the right approach.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Spinner</div>
+                        <div class="dimensionPercentage">49%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 49%, you're experiencing the frustration of knowing your life should matter deeply while feeling stuck in translating that desire into concrete action. Your strongest area, Meaning & Contribution, shows you have glimpses of purpose and understand the importance of aligned choices, but your Goals & Ambition score reveals the core challenge—you're caught between vision and momentum, likely cycling through planning without decisive action. The path forward requires focusing less on perfecting your entire future blueprint and more on defining one small, measurable next step that connects to what you know matters to you.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 59% alignment score indicates moderate alignment with significant room for improvement across multiple life areas.</strong></p><p>Your greatest strength lies in Work & Purpose, where you scored 4.50/5, showing strong clarity and satisfaction in your professional direction.</p><p><strong>Your most urgent opportunity is Goals & Ambition at just 1.00/5 - developing clear, actionable goals is critical for moving forward.</strong></p>
+            </div>
+
+            <!-- What's Working -->
+            <section class="section">
+                <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+                <div class="domainGrid">
+                    <div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Temperament Awareness</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge developing">3.33</span></div>
+<div class="domain-item developing"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge developing">3.33</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Gratitude</span><span class="domain-score-badge needs-attention">2.50</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Habits, Health & Energy</span><span class="domain-score-badge needs-attention">2.38</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Financial Security & Intentionality</span><span class="domain-score-badge needs-attention">2.00</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Learning & Growth Orientation</span><span class="domain-score-badge needs-attention">1.50</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Goals & Ambition</span><span class="domain-score-badge needs-attention">1.00</span></div>
+                </div>
+                <div class="recommendation-card">
+<h3>Work & Purpose (4.50/5)</h3>
+<p>Your exceptionally high score in Work & Purpose reveals that you have achieved a rare level of clarity and satisfaction in your professional life. You likely feel deeply connected to your work's meaning and have found strong alignment between your values and daily activities. This suggests you've successfully navigated the often challenging process of discovering work that truly fulfills you.</p>
+<h4>Why This Matters For You</h4>
+<p>Having such strong work-purpose alignment gives you a significant advantage in maintaining motivation and resilience during challenging times. This foundation of meaningful work can serve as an anchor for other areas of your life and provides you with intrinsic energy that many people struggle to find.</p>
+<h4>How to Leverage This</h4>
+<p>Use your clear sense of purpose as a decision-making filter for new opportunities and projects. When faced with choices, ask yourself which option best aligns with the meaningful work you've already identified, allowing this strength to guide your continued professional growth.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Core Beliefs & Identity (4.00/5)</h3>
+<p>Your strong score in Core Beliefs & Identity indicates you have developed a solid understanding of who you are and what you stand for. You likely have clarity around your fundamental values and have done the important work of defining your identity independent of external expectations. This self-knowledge provides you with a stable foundation for making authentic decisions.</p>
+<h4>Why This Matters For You</h4>
+<p>Having well-defined core beliefs and identity serves as your internal compass, helping you navigate life's complexities with confidence. This clarity reduces decision fatigue and helps you maintain consistency in your choices, which builds trust with others and self-respect.</p>
+<h4>How to Leverage This</h4>
+<p>Regularly reference your core beliefs when making important decisions, and consider sharing your values more openly with others. This authenticity will attract like-minded people and opportunities that align with who you truly are.</p>
+</div>
+            </section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Learning & Growth Orientation (1.50/5)</h3>
+<p>Your score reveals a significant disconnect from continuous learning and personal development. This suggests you may feel stuck in routines or overwhelmed by the pace of change, making it difficult to embrace new challenges or skills.</p>
+<h4>Why This Matters For You</h4>
+<p>In today's rapidly evolving world, a growth mindset is essential for staying relevant and finding fulfillment. Without actively learning and adapting, you risk feeling left behind and missing opportunities for personal and professional advancement.</p>
+<h4>Start Here This Week</h4>
+<p>Choose one small learning goal—read one article about a topic that interests you, watch a 10-minute educational video, or ask someone to teach you something new. The key is starting small and building momentum.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Goals & Ambition (1.00/5)</h3>
+<p>This score indicates you're currently lacking clear direction and motivation toward meaningful objectives. You may feel uncertain about what you want to achieve or overwhelmed by the gap between where you are and where you'd like to be.</p>
+<h4>Why This Matters For You</h4>
+<p>Without clear goals, it's easy to drift through life feeling unfulfilled and reactive rather than intentional. Having direction gives you purpose and helps you make decisions that align with your values and desired future.</p>
+<h4>Start Here This Week</h4>
+<p>Write down three things you'd like to improve or achieve in the next 90 days—they can be small. Pick the one that excites you most and identify the very first step you could take tomorrow.</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>Your scores reveal someone who has built a solid foundation from your past experiences but is currently struggling to translate that wisdom into forward momentum. You have strong clarity about your work and purpose, and you've developed good self-awareness about who you are at your core. However, you're finding it challenging to channel that foundation into active learning and concrete goals for the future. This creates a pattern where you feel grounded in what you've accomplished but uncertain about where you're headed next.</p>
+
+<p>Your lowest areas — learning orientation and goal-setting — are actually where the greatest opportunity lies. Research shows that when we stop actively learning and pursuing specific objectives, we often experience what psychologists call "drift," where days feel busy but lack direction. These aren't personal shortcomings; they're simply the areas where focused attention will create the most significant shift in how purposeful and energized you feel day-to-day.</p>
+
+<p>Given that multiple core areas are feeling heavy right now, it might be worth exploring whether your brain has the support it needs to function the way it's meant to. A psychiatrist understands these patterns specifically and approaches it as an ongoing conversation about what's happening, not just prescribing solutions. This kind of support often makes everything else feel more manageable.</p>
+
+<ul>
+<li>Choose one specific skill or topic that genuinely interests you and commit to spending 20 minutes learning about it three times this week — whether through a podcast, article, or short video</li>
+<li>Write down one concrete goal you want to accomplish in the next 30 days, break it into three smaller steps, and schedule the first step in your calendar for this weekend</li>
+<li>Set up a simple habit tracker for one health-related behavior (like drinking water, taking a walk, or going to bed by a certain time) and check it off daily for two weeks</li>
+<li>Schedule 15 minutes each Sunday to review what you learned that week and identify one thing you want to explore or accomplish in the coming week</li>
+<li>Find one person in your life who shares an interest or goal similar to yours and suggest meeting or talking regularly about your progress</li>
+</ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4>Past: Self-Acceptance & Forgiveness</h4>
+<p><strong>Week 1:</strong> At 8 p.m. tonight, handwrite for 10 minutes on one memory that still stings using the starter, "The part I can own is...".</p>
+<p><strong>Weeks 2-4:</strong> Every Sunday at 6 p.m., write a compassionate reframe for one regret in three sentences or fewer.</p>
+<p><strong>Months 2-3:</strong> On the first of each month, record a 2-minute voice note titled "Meaning From Memory — [Month]" summarizing what you’ve released.</p>
+
+<h4>Present: Learning & Growth Orientation</h4>
+<p><strong>Week 1:</strong> On Tuesday at 9:00 a.m., spend 15 minutes on one mildly uncomfortable skill task (e.g., the next lesson in a beginner course). If several parts of life keep feeling heavy at the same time, it may help to speak with a psychiatrist — they specialize in this and it tends to work best as a steady, ongoing conversation.</p>
+<p><strong>Weeks 2-4:</strong> Every Mon/Wed/Fri at 9:00 a.m., run a 15-minute "stretch rep" on the same skill with a visible timer.</p>
+<p><strong>Months 2-3:</strong> Each Friday by 4 p.m., ask one person for specific feedback using, "What’s one thing I could do 10% better next week on [X]?"</p>
+
+<h4>Future: Goals & Ambition</h4>
+<p><strong>Week 1:</strong> At 9 a.m. tomorrow, write one measurable 90-day target on a blank page (e.g., "Publish portfolio v1 with 3 case studies by Apr 30").</p>
+<p><strong>Weeks 2-4:</strong> Under that target, list three dated milestones (M1, M2, M3) that add up to the goal.</p>
+<p><strong>Months 2-3:</strong> Every Monday at 8:30 a.m., run a 25-minute focus session on the single next task before opening email.</p>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<li><strong>The 12 Week Year</strong> by Brian Moran — This system transforms overwhelming long-term goals into manageable 12-week sprints, giving you the momentum and clarity you need to bridge the gap between vision and action.</li>
+<li><strong>Get Good with Money</strong> by Tiffany Aliche — A practical, step-by-step approach to building financial security that breaks down money management into achievable milestones rather than overwhelming concepts.</li>
+<li><strong>Atomic Habits</strong> by James Clear — Shows you how to build the small, consistent actions that create lasting change, especially when motivation feels low and growth feels uncomfortable.</li>
+</ul>
+
+<h4>Practices</h4>
+<ul>
+<li><strong>Weekly Goal Setting</strong> — Every Sunday, choose one specific, measurable goal you can complete in the next seven days, then track your progress daily to build momentum through completion.</li>
+<li><strong>Growth Comfort Zone Expansion</strong> — Each week, deliberately choose one small area where you'll be uncomfortable in service of learning something new, treating the discomfort as data rather than danger.</li>
+</ul>
+
+<h4>Tools</h4>
+<ul>
+<li><strong>Copilot Money</strong> — Tracks spending, budgets, investments, and net worth automatically across all your accounts, available at copilot.money and through the App Store.</li>
+<li><strong>Todoist</strong> — A task management app that helps you break down big goals into actionable steps with due dates and progress tracking, available at todoist.com.</li>
+</ul>
+
+<h4>Professional Support</h4>
+<ul>
+<li><strong>Therapy for Self-Acceptance and Growth Patterns</strong> — A therapist who specializes in self-compassion and growth mindset can help you understand why discomfort feels threatening instead of exciting, giving you tools to reframe challenges as opportunities. Find therapists at psychologytoday.com/us/therapists or explore affordable options at openpathcollective.org.</li>
+</ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
