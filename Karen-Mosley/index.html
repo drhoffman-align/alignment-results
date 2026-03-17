@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karen Mosley - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Karen Mosley</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2025-11-25<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">80%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Balanced Planner</div>
+                <div class="personaDescription">You're in maintenance mode, and that's not bad — it's just not growth mode. The risk here is coasting. You've built something stable, and now the work is keeping it dynamic. What's one edge you can push? One new skill, one uncomfortable conversation, one goal that scares you a little? Growth doesn't mean blowing up what you've built — it means building on it. Don't let past success become present complacency.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Historian</div>
+                        <div class="dimensionPercentage">66%</div>
+                        <div class="dimensionOutputText">You understand your wiring—your natural pace, sensitivities, and emotional rhythm. That awareness makes you less reactive and more intentional. You know what depletes you, what restores you, and how to work with your nervous system instead of against it. This reflects emotional maturity and self-regulation capacity. Most people spend their lives fighting their temperament; you've learned to honor it, which gives you an edge in managing stress, relationships, and energy.Additionally, there may still be parts of your past you haven't fully made peace with. Self-criticism or unresolved guilt may surface frequently, keeping your nervous system in a defensive state. When self-judgment runs high, the brain tends to stay in protection mode rather than growth mode. This doesn't mean you're broken; it means your mind is still guarding old wounds. Healing here means shifting from judgment to understanding, allowing honesty and compassion to coexist. With guidance and intentional reflection, this becomes the doorway to peace.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Flow Keeper</div>
+                        <div class="dimensionPercentage">82%</div>
+                        <div class="dimensionOutputText">You've found (or built) work that connects to your values. When meaning and productivity overlap, motivation becomes intrinsic—you're driven by what matters, not just what's expected. This is the difference between being driven and being drained. Your work may not be perfect, but it aligns with who you are and what you care about. You show up as your authentic self, which makes even challenging days feel worthwhile. This is what sustainable success looks like.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Holder</div>
+                        <div class="dimensionPercentage">87%</div>
+                        <div class="dimensionOutputText">You're forward-focused and purposeful. You set goals that stretch you without breaking you—a hallmark of self-regulated motivation. Your ambition is sustainable because it's values-driven, not fear-driven. You have clarity about what you're building toward, and you've learned to balance aspiration with patience. You measure progress in meaningful increments, not just outcomes. This kind of intentional ambition creates momentum without burnout. You're not chasing someone else's definition of success—you're building your own.Additionally, you may feel anxious or avoidant about money. That's often tied to past scarcity, fear of failure, or simply not knowing where to start. Financial stress can keep you in reactive mode—making decisions based on immediate need rather than long-term stability. This isn't irresponsibility; it's overwhelm. Building financial structure isn't just practical—it's emotional safety in disguise. The path forward involves creating one simple, clear system: tracking where money goes, setting one achievable savings goal, or automating one bill. Clarity reduces anxiety. Start with visibility, not perfection.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 80% alignment score places you in the "Strong Alignment" category, indicating you have solid foundations across most life areas with room for targeted improvements.</strong></p><p>Your greatest strength lies in multiple peak areas including Temperament Awareness, Work & Purpose, Gratitude, Goals & Ambition, and Courage & Resilience, all scoring perfect 5.0s.</p><p><strong>Your most urgent opportunity is Self-Acceptance & Forgiveness at 2.25, which requires immediate attention as this foundational area significantly impacts overall well-being.</strong></p>
+            </div>
+
+            <!-- What's Working -->
+            <section class="section">
+                <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+                <div class="domainGrid">
+                    <div class="domain-item perfect"><span class="domain-name">⭐ Temperament Awareness</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Work & Purpose</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Gratitude</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Goals & Ambition</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item perfect"><span class="domain-name">⭐ Courage & Resilience</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.75</span></div>
+<div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.63</span></div>
+<div class="domain-item developing"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Self-Acceptance & Forgiveness</span><span class="domain-score-badge needs-attention">2.25</span></div>
+                </div>
+                <div class="recommendation-card">
+<h3>Temperament Awareness (5.00/5)</h3>
+<p>Your perfect score in temperament awareness reveals that you have exceptional insight into your natural behavioral patterns, emotional triggers, and instinctive responses. This deep self-knowledge allows you to navigate complex interpersonal dynamics with remarkable skill and adapt your communication style to different stakeholders effectively.</p>
+<h4>Why This Matters For You</h4>
+<p>As a philanthropic strategist in your late career phase, this temperament mastery is invaluable when working with diverse donors, board members, and community leaders who each have different motivations and communication preferences. Your ability to read and respond to various temperaments likely makes you exceptionally effective at building the trust and rapport essential for successful fundraising and strategic partnerships.</p>
+<h4>How to Leverage This</h4>
+<p>Use your temperament awareness to mentor younger professionals in your field by teaching them how to identify and adapt to different donor personalities. Consider developing a donor temperament assessment tool or framework that your organization can use to improve engagement strategies across the team.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Work & Purpose (5.00/5)</h3>
+<p>Your perfect alignment score indicates that you have achieved the rare accomplishment of finding work that completely resonates with your core values and sense of purpose. You likely experience your philanthropic strategy role not just as a career, but as a calling that energizes and fulfills you at a fundamental level.</p>
+<h4>Why This Matters For You</h4>
+<p>At this stage of your career, having such strong purpose alignment positions you as an authentic and passionate advocate for the causes you support, which is crucial for inspiring confidence in major donors and institutional partners. This genuine connection to your work likely contributes significantly to your professional effectiveness and personal satisfaction as you approach your peak earning and influence years.</p>
+<h4>How to Leverage This</h4>
+<p>Channel this deep sense of purpose into thought leadership by writing articles or speaking at conferences about the intersection of strategic philanthropy and personal mission. Your authentic passion will resonate powerfully with audiences and can help establish you as a leading voice in the field.</p>
+</div>
+            </section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Self-Acceptance & Forgiveness (2.25/5)</h3>
+<p>Your score reveals a pattern of self-criticism that may be undermining your confidence and decision-making ability. As someone who likely holds high standards for yourself and others in your philanthropic work, you may struggle to extend the same compassion to yourself that you show to the causes you champion.</p>
+<h4>Why This Matters For You</h4>
+<p>At 45-54, self-acceptance becomes crucial for sustained leadership and personal fulfillment. Your ability to forgive yourself for past mistakes directly impacts your capacity to take bold risks and make innovative decisions in your strategic work.</p>
+<h4>Start Here This Week</h4>
+<p>Write down one mistake or regret you've been carrying, then write yourself a letter of forgiveness as if you were counseling a dear friend facing the same situation.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Financial Security & Intentionality (3.00/5)</h3>
+<p>Your financial planning may lack the strategic depth you bring to your professional work. This disconnect between your strategic expertise and personal financial management could be creating underlying stress that affects your overall well-being and long-term security.</p>
+<h4>Why This Matters For You</h4>
+<p>As a philanthropic strategist in your late 40s to early 50s, aligning your personal financial strategy with your values becomes essential for both security and authenticity. Your financial choices should reflect the same intentionality you bring to your mission-driven work.</p>
+<h4>Start Here This Week</h4>
+<p>Schedule a 2-hour block to review your current financial picture and identify one specific area where your spending or saving doesn't align with your stated values and priorities.</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>Your scores reveal someone who has built remarkable clarity about their purpose and direction — you're exceptionally strong in work fulfillment, gratitude, and goal-setting — yet you're carrying some unresolved weight from your past that's creating subtle friction in how you experience yourself today. This pattern suggests you've developed impressive external systems and forward momentum while some internal foundations remain unsteady, particularly around self-acceptance and forgiveness.</p>
+
+<p>Your lowest area, self-acceptance and forgiveness, isn't a character flaw — it's actually where your greatest growth potential lies. Research consistently shows that self-compassion is the foundation that makes all other strengths more sustainable and authentic. When we're harsh with ourselves about past decisions or perceived failures, it creates an undercurrent of tension that can undermine even our most successful endeavors. Addressing this area will likely amplify the considerable strengths you've already built.</p>
+
+<p>Given the weight you're carrying from your past, working with a therapist could help you examine the beliefs and patterns that once served you but may now be creating unnecessary internal pressure. This kind of foundational work often makes everything else — your relationships, your energy, your financial confidence — feel more solid and authentic.</p>
+
+<ul>
+<li>Write yourself a letter of forgiveness for one specific past decision that still weighs on you, then read it aloud to yourself</li>
+<li>Create a daily 10-minute morning routine that includes one physical activity you genuinely enjoy, not one you think you should do</li>
+<li>Schedule a monthly financial review session where you celebrate progress made, not just identify gaps</li>
+<li>Practice responding to your inner critic the same way you'd respond to a friend sharing that same concern — with curiosity rather than judgment</li>
+<li>Set up one automated financial system this month (savings transfer, investment contribution, or bill payment) to reduce decision fatigue around money</li>
+</ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    WEEK 1: Today and each day this week, set a 10-minute timer, take slow breaths (inhale 4, exhale 6) for 1 minute, then handwrite a Compassion Note: name one self-judgment, write “It’s understandable because…”, and write one kind action you will do today—then do it.
+
+WEEKS 2-4: Every Sunday, do a 30-minute closure ritual: pick one old memory, handwrite a self-forgiveness letter (15 min), read it aloud, then seal or shred it; on two weekdays, play a 10-minute loving-kindness meditation directed toward yourself.
+
+MONTHS 2-3: Schedule and attend four 45–60 minute sessions (biweekly) with a therapist, coach, or trusted mentor to process one story at a time; keep the weekly closure ritual; drop one slip daily into a jar noting a self-kind action and review the slips at month’s end.
+
+WEEK 1: Spend 20 minutes creating a one-page money snapshot: list all accounts, debts, bills, due dates, and minimums in a note or spreadsheet, and set calendar reminders 3 days before each due date.
+
+WEEKS 2-4: Do a 30-minute Money Check-in every week (same day/time): categorize last week’s spending into 5 categories in your sheet, pay any due bills, move a fixed amount (e.g., $25) to savings, and turn on autopay for one recurring bill each week.
+
+MONTHS 2-3: On the 1st of each month, hold a 60-minute Money Date: review category totals, set a simple spending cap for the coming month, increase your automatic savings by a small step (e.g., +$10), open/label a high-yield savings as “Emergency Fund” and set a payday auto-transfer; call one provider to ask for a lower rate or fee waiver.
+
+WEEK 1: Do a 10-minute brisk walk outdoors immediately after waking each day; lay out shoes by the door each night to cue the walk.
+
+WEEKS 2-4: Establish a simple energy routine: Movement (20 minutes, 3x/week), Sleep (screens off 45 minutes before bed; same lights-out and wake time daily), Nutrition (on Sunday, prep 2 proteins and 2 vegetables for quick meals).
+
+MONTHS 2-3: Build consistency: reach 150 minutes of moderate activity per week (e.g., 30 minutes, 5x/week), keep a written sleep log targeting 7.5–8 hours/night, and run a 15-minute weekly grocery plan with a written list; track these on a habit chart and aim for 80% completion each week.
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<li><strong>Rising Strong</strong> by Brené Brown — This book directly addresses the journey from self-criticism to self-compassion, helping you transform shame and judgment into courage and resilience.</li>
+<li><strong>Set Boundaries, Find Peace</strong> by Nedra Glover Tawwab — A practical guide for establishing healthy boundaries that protect your energy and emotional well-being while maintaining authentic relationships.</li>
+<li><strong>Get Good with Money</strong> by Tiffany Aliche — Offers a clear, step-by-step approach to building financial security without overwhelm, perfect for transforming money anxiety into confident action.</li>
+</ul>
+
+<h4>Practices</h4>
+<ul>
+<li><strong>Daily Self-Compassion Check-In</strong> — Each morning, ask yourself "What do I need to forgive myself for today?" and respond with the same kindness you'd show a close friend.</li>
+<li><strong>Weekly Money Date</strong> — Spend 30 minutes every Sunday reviewing your expenses from the week and setting one small financial intention for the coming week.</li>
+</ul>
+
+<h4>Tools</h4>
+<ul>
+<li><strong>Copilot</strong> — A personal finance app that tracks spending patterns and provides insights to help you understand where your money goes, available at copilot.money.</li>
+</ul>
+
+<h4>Professional Support</h4>
+<ul>
+<li><strong>Therapy for Self-Acceptance and Forgiveness</strong> — A therapist who specializes in shame resilience and self-compassion can help you transform the inner critic into an inner ally, creating the emotional foundation for growth in all areas of life. Find therapists at psychologytoday.com/us/therapists or explore affordable options at openpathcollective.org.</li>
+</ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
