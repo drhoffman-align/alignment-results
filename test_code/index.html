@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christopher Hoffman - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Christopher Hoffman</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-02-03<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">74%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Flexible Strategist</div>
+                <div class="personaDescription">Your adaptability is a superpower, but it can also become a trap if you're so flexible that nothing ever solidifies. The future doesn't need to be rigid, but it does need stakes. What are you building toward that matters enough to protect? Not every opportunity is your opportunity. Start saying no to things that don't serve the vision — even if that vision is still forming. Flexibility works best when you know what you're flexing around.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Phoenix</div>
+                        <div class="dimensionPercentage">88%</div>
+                        <div class="dimensionOutputText">You know who you are—and you live like it. That clarity keeps your decisions consistent with your values, which is strongly linked to life satisfaction and psychological stability. You've moved beyond inherited beliefs and survival-based identities to define yourself on your own terms. This kind of self-definition is what allows real alignment. Your sense of self isn't rigid—it evolves—but it's rooted in something solid. That's the foundation of authentic leadership and meaningful relationships. Additionally, you may not fully recognize how your energy, emotions, or stress patterns work. Without that awareness, attempts at self-management can feel like self-sabotage—you're trying strategies that don't fit your system. You might push when you need to rest, force extroversion when you're wired for depth, or misread your emotional cues entirely. This isn't a character flaw; it's a gap in self-knowledge. The path forward involves paying attention to your natural rhythm and learning your system before trying to optimize it.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Tightrope Walker</div>
+                        <div class="dimensionPercentage">70%</div>
+                        <div class="dimensionOutputText">You treat your energy like a resource, not a mystery. Consistent sleep, movement, and recovery patterns keep your brain and body aligned—which is exactly how you sustain success without burnout. Your daily routines support your well-being, and you've learned that discipline isn't about willpower; it's about systems that work with your life, not against it. You understand that your body sets the ceiling for your brain's performance. This is sustainable high performance. Additionally, you might be spending more emotional energy managing how you're perceived than actually connecting. This often shows up as people-pleasing, over-explaining, or feeling exhausted after social interactions. True connection requires vulnerability, not perfection. Right now, the risk of being seen feels higher than the reward of being known. The path forward involves starting with one safe relationship where you practice showing up more honestly. Being seen starts with being honest—even in small ways.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Pathfinder</div>
+                        <div class="dimensionPercentage">72%</div>
+                        <div class="dimensionOutputText">You've developed the ability to act in the presence of fear. Courage isn't about comfort; it's about continuing forward even when the outcome isn't guaranteed. Research shows that confidence follows experience, not the other way around—you've learned this firsthand. You've taken risks, faced setbacks, and kept moving. That's psychological strength in action. Resilience isn't about never falling; it's about knowing you can get back up. You trust yourself to handle what comes, and that trust is earned through lived experience. Additionally, you have solid goals and motivation, but your pace may fluctuate depending on stress, uncertainty, or competing priorities. Some weeks you feel clear and focused; other weeks your direction feels foggy. You know what you want, but translating vision into consistent action is the challenge. The work now is sharpening your focus—breaking big goals into smaller, measurable steps and creating systems that support momentum even when motivation dips. Ambition without structure becomes wishful thinking.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 74% alignment score indicates you're in a solid position with good foundational strengths, though there's meaningful room for growth across several key areas.</strong></p><p>Your greatest strength lies in Core Beliefs & Identity (4.75/5), showing you have a clear sense of who you are and what you stand for.</p><p><strong>Your most urgent opportunity is improving Temperament Awareness (3.00/5), which will help you better understand and manage your natural reactions and behavioral patterns.</strong></p>
+            </div>
+
+            <!-- 13 Domains Summary -->
+<section class="section">
+    <h2 class="sectionHeader">13 Domains Summary</h2>
+    <div class="domainGrid">
+        <div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.75</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge strong">4.13</span></div>
+<div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge developing">3.67</span></div>
+<div class="domain-item developing"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge developing">3.40</span></div>
+<div class="domain-item developing"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge developing">3.33</span></div>
+<div class="domain-item developing"><span class="domain-name">Temperament Awareness</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Gratitude</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge developing">3.00</span></div>
+    </div>
+</section>
+
+<!-- What's Working -->
+<section class="section">
+    <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+    <div class="recommendation-card">
+<h3>Core Beliefs & Identity (4.75/5)</h3>
+<p>Your exceptionally high score reveals that you have developed a remarkably clear and stable sense of who you are at your core. You demonstrate strong conviction in your fundamental values and beliefs, and you likely experience minimal internal conflict about your identity and what truly matters to you.</p>
+<h4>Why This Matters For You</h4>
+<p>This solid foundation of self-knowledge serves as an anchor during times of uncertainty and change. Having such clarity about your core identity means you can make decisions more confidently and navigate life's challenges with greater consistency and purpose.</p>
+<h4>How to Leverage This</h4>
+<p>Use your strong sense of identity as a decision-making filter by regularly asking yourself "Does this align with who I am at my core?" when facing important choices. This will help you maintain authenticity and avoid commitments that drain your energy.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Self-Acceptance & Forgiveness (4.50/5)</h3>
+<p>Your high score indicates that you have cultivated a healthy relationship with yourself, showing genuine compassion for your imperfections and mistakes. You likely possess the ability to learn from setbacks without getting trapped in self-criticism, and you demonstrate remarkable emotional resilience when facing personal challenges.</p>
+<h4>Why This Matters For You</h4>
+<p>This level of self-acceptance creates a stable emotional foundation that allows you to take healthy risks and recover quickly from disappointments. It also enables you to maintain better relationships with others, as you're not projecting unresolved self-judgment onto them.</p>
+<h4>How to Leverage This</h4>
+<p>Model this strength for others by openly sharing how you've learned to be kind to yourself during difficult times. Your example can inspire those around you to develop healthier self-relationships, while also deepening your own connections.</p>
+</div>
+</section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Temperament Awareness (3.0/5)</h3>
+<p>Your temperament awareness sits right at the threshold, suggesting you have some understanding of your natural patterns but may not be leveraging this knowledge fully. This creates missed opportunities for optimizing your energy and decision-making based on your innate strengths.</p>
+<h4>Why This Matters For You</h4>
+<p>Understanding your temperament is like having a user manual for yourself—it helps you work with your natural tendencies rather than against them. When you know how you naturally process information and recharge, you can make choices that feel more effortless and sustainable.</p>
+<h4>Start Here This Week</h4>
+<p>Take 10 minutes to reflect on when you feel most energized and productive during the day, then schedule one important task during that optimal time window.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Relationships & Authenticity (3.0/5)</h3>
+<p>Your relationships and authenticity score indicates you may be holding back parts of yourself in your connections with others. This suggests there's room to deepen your relationships by showing up more genuinely and creating space for more meaningful interactions.</p>
+<h4>Why This Matters For You</h4>
+<p>Authentic relationships are the foundation of both personal fulfillment and professional success. When you can be genuine in your connections, you attract the right people and opportunities while reducing the exhausting effort of maintaining facades.</p>
+<h4>Start Here This Week</h4>
+<p>Choose one relationship where you've been holding back and share something genuine about yourself—a struggle, a dream, or simply how you're really feeling.</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    Your assessment reveals some fascinating patterns that offer valuable insights for personal growth. The area of temperament awareness deserves particular attention, as research in personality psychology shows that understanding your natural behavioral tendencies is foundational to emotional regulation and decision-making. When we lack clarity about our temperament, we often find ourselves reacting rather than responding thoughtfully to situations. Consider keeping a brief daily journal noting your emotional responses to different situations - this practice can help you identify patterns in your reactions and develop greater self-awareness over time.
+
+Your current challenges with relationships and authenticity, combined with future concerns about goals and ambition, suggest an interconnected opportunity for growth. Psychological research indicates that authentic relationships actually fuel our sense of purpose and drive toward meaningful goals. To strengthen these areas, try practicing vulnerable communication with trusted friends or family members - share something genuine about your current struggles or aspirations. Additionally, consider setting aside time weekly to reflect on what truly energizes you versus what you feel you "should" be doing. This alignment between your authentic self and your ambitions often creates a natural momentum that addresses both relationship depth and goal clarity simultaneously.
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    Temperament Awareness
+WEEK 1: Set three alarms (10am, 2pm, 6pm). When they ring, log: energy 1–10, emotion word, last meal, last 90 min activity, and one body tension spot. Do 2 minutes of box breathing (4-4-4-4). If energy ≤4, take a 10-minute no-screen walk or stretch. Use your phone Notes or a printed sheet.
+WEEKS 2-4: Each Sunday, review your log and choose one high-energy and one low-energy window. For three weeks: schedule your top task in the high-energy window (30–60 min), put admin/errands in the low-energy window (15–30 min), and set a 5-minute reset every 90 minutes (stand, water, breathe). Add a “social recovery” rule: leave one event at the 60-minute mark. Track completion with a daily checkbox.
+MONTHS 2-3: Create a one-page Personal Operating Manual: best focus hours, ideal sleep/wake, food/hydration notes, break frequency, red/yellow/green day actions. Implement it: protect two 90-minute deep-work blocks weekly in best hours, prep your workspace the night before, and schedule one 3–4 hour rest block weekly. Do a 30-minute weekly audit to update the manual.
+
+Relationships & Authenticity
+WEEK 1: Pick one safe person. Send a message today to schedule a 30-minute call/coffee. Before it, write one honest sentence you’ll say (e.g., “I’ve been people-pleasing and want to practice being more direct”). During the chat, state one preference or boundary. After, jot three bullets: energy before/after, what felt scary, what felt easier.
+WEEKS 2-4: Do one “honesty rep” per week. Options: decline a small request without a justification, share a true preference, or ask for specific help. Use a two-sentence cap to avoid over-explaining. After each rep, record date, person, words you used, and outcome. Limit social commitments to two per week and put an exit time in your calendar.
+MONTHS 2-3: Build a circle of three. List three relationships and set recurring check-ins (biweekly, 30 minutes each). Use a vulnerability ladder: weeks 5–8 share small truths; weeks 9–12 share one medium truth (need, boundary, fear). Practice one boundary per month in a real scenario and log the result.
+
+Goals & Ambition
+WEEK 1: Choose one priority goal. Define a two-week deliverable (e.g., “Draft 3-page outline”). Set up a simple board (sticky notes/app) with To Do/Doing/Done. Block a daily 45-minute focus slot at the same time for four days. Each session: put phone in another room, start a timer, complete one task, move one sticky to Done, then spend 5 minutes setting up tomorrow’s first step.
+WEEKS 2-4: Run a weekly planning ritual (Sunday, 30 minutes). Break the goal into three outcomes per week and schedule them. Each weekday, set one MVT (most valuable task) and do it in a 60–90 minute block. Nightly, lay out tools, open the right doc, and enable a site blocker. Do a Friday 30-minute review to measure progress and adjust next week’s plan.
+MONTHS 2-3: Work in 2-week sprints. Sprint planning: pick 3–5 tasks with clear “done” definitions (demo, link, or email). Protect four deep-work blocks per week and add a mid-sprint buffer block. End each sprint by sharing a tangible checkpoint (send draft, post summary, or show demo). Keep a visible scoreboard and run a 30-minute retrospective to refine your system.
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    **3 BOOKS:**
+- Set Boundaries, Find Peace by Nedra Glover Tawwab
+- Emotional Intelligence 2.0 by Travis Bradberry and Jean Greaves
+- Atomic Habits by James Clear
+
+**2 PRACTICES:**
+- Daily Temperament Check-In: Set aside 5 minutes each morning to identify and name your current emotional state, physical sensations, and energy level. Use a simple 1-10 scale to rate your mood and note any triggers or patterns
+- The 5-4-3-2-1 Grounding Technique: When feeling overwhelmed or disconnected, identify 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste to increase present-moment awareness and emotional regulation
+
+**1-2 TOOLS:**
+- EQ App: A comprehensive emotional intelligence training app that provides daily exercises, mood tracking, and personalized insights to improve emotional awareness and regulation
+- Cues App: A science-backed social intelligence app designed to help decode social cues, improve body language awareness, and enhance relationship skills through interactive training modules
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
