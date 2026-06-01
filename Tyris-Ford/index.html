@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyris Ford - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+/* ── AI Formatted Content ── */
+.aiSubheader {
+  color: #D09038;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aiList {
+  margin: 0.5rem 0 1rem 1.2rem;
+  padding: 0;
+}
+
+.aiList li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Tyris Ford</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-06-01<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">79%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Reflective Explorer</div>
+                <div class="personaDescription">You're in one of the most generative phases: stable enough to think clearly, curious enough to stay open. The only caution? Don't let exploration become procrastination. There's a difference between gathering options and avoiding commitment. Set a decision deadline for yourself. By X date, I'll choose a direction — not the perfect direction, just a direction. You can always course-correct. Reflection is powerful, but eventually you have to act on what you're learning.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Historian</div>
+                        <div class="dimensionPercentage">75%</div>
+                        <div class="dimensionOutputText">At 75%, your Past reflects meaningful integration work—you've built a strong foundation in Core Beliefs & Identity that allows you to show up authentically in your relationships and work as a Family Nurse Practitioner. The remaining tension lives in Temperament Awareness, where you may still be learning to read your own energy and stress patterns rather than pushing against them. You're a Historian who knows your story well enough to lead from it, but there's room to deepen how you honor your natural rhythms in the day-to-day.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Flow Keeper</div>
+                        <div class="dimensionPercentage">82%</div>
+                        <div class="dimensionOutputText">You've built something meaningful in your work—it's aligned with who you are and what you care about, and that's showing up in how you function day to day. The one place that's costing you right now is self-awareness and emotional intelligence: when you're not tuned into your own emotional patterns or how you're landing with others, even strong work can start to feel isolating or reactive. Strengthening that internal clarity would let everything else you've built work even better.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Pathfinder</div>
+                        <div class="dimensionPercentage">74%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 74%, you're a Pathfinder with strong direction and meaningful ambition—your goals are values-driven and sustainable, which is rare and powerful. However, your financial clarity isn't keeping pace with your vision, and that gap is likely creating underlying anxiety that undermines your confidence in building what matters most. The unlock here is simple but essential: creating one clear financial system—whether it's tracking, automating, or setting a single savings goal—will give you the emotional safety and structural foundation your ambition deserves.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 79% alignment score places you in the "Strong Alignment" range, meaning you have solid self-awareness and are living largely in accordance with your values, with clear opportunities to strengthen specific areas.</strong></p><p>Your greatest strength is Work & Purpose (5.00/5), indicating you have exceptional clarity and fulfillment in your professional life as a Family Nurse Practitioner.</p><p><strong>Your most urgent opportunity is Temperament Awareness (3.00/5), where developing deeper understanding of your natural behavioral patterns and emotional responses will unlock greater self-mastery.</strong></p>
+            </div>
+
+            <!-- 13 Domains Summary -->
+<section class="section">
+    <h2 class="sectionHeader">13 Domains Summary</h2>
+    <div class="domainGrid">
+        ```html
+<div class="domain-item perfect"><span class="domain-name">⭐ Work & Purpose</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Gratitude</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.25</span></div>
+<div class="domain-item strong"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.88</span></div>
+<div class="domain-item developing"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge developing">3.67</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge developing">3.60</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Temperament Awareness</span><span class="domain-score-badge developing">3.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge developing">3.00</span></div>
+```
+    </div>
+</section>
+
+<!-- What's Working -->
+<section class="section">
+    <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+    ```html
+<div class="recommendation-card">
+<h3>Work & Purpose (5.00/5)</h3>
+<p>Your perfect score reveals that you've achieved exceptional alignment between your daily work as a Family Nurse Practitioner and your deeper sense of purpose. You experience your healthcare role not just as a job, but as a genuine calling that energizes and fulfills you. This level of vocational clarity is rare and indicates you've found meaningful work that leverages your natural strengths while serving others.</p>
+<h4>Why This Matters For You</h4>
+<p>In your late twenties to early thirties, having this level of purpose in your nursing career provides a powerful foundation for long-term professional satisfaction and prevents the burnout that affects many healthcare providers. This alignment will sustain you through the demanding nature of patient care and position you for leadership opportunities as you continue to grow in your field.</p>
+<h4>How to Leverage This</h4>
+<p>Channel this strong sense of purpose into mentoring newer nurses or nurse practitioner students who are still discovering their professional identity. Your clarity about why your work matters can inspire others and deepen your own sense of contribution while building your leadership presence in healthcare.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Learning & Growth Orientation (4.50/5)</h3>
+<p>Your high score demonstrates that you maintain a strong commitment to continuous learning and professional development, which is essential in the rapidly evolving field of healthcare. You view challenges and new situations in your practice as opportunities to expand your clinical knowledge rather than threats to your competence. This growth mindset keeps you engaged and adaptable as medical protocols and treatment approaches advance.</p>
+<h4>Why This Matters For You</h4>
+<p>As a Family Nurse Practitioner in your prime career-building years, this learning orientation will accelerate your clinical expertise and keep you current with evidence-based practices. Your willingness to grow positions you to take on specialized certifications or advanced practice roles that can significantly expand your impact and earning potential.</p>
+<h4>How to Leverage This</h4>
+<p>Identify one specialized area of family medicine that fascinates you—whether it's women's health, chronic disease management, or integrative medicine—and pursue targeted continuing education or certification in that niche. This focused learning will differentiate your practice and create new opportunities for professional advancement.</p>
+</div>
+```
+</section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                ```html
+<div class="recommendation-card">
+<h3>Temperament Awareness (3.0/5)</h3>
+<p>You're operating without a clear map of your natural wiring—how you recharge, process decisions, and respond under stress. As a Family Nurse Practitioner facing constant patient demands, this gap means you're likely pushing against your grain rather than working with it. You may be forcing yourself into interaction patterns or work rhythms that drain rather than sustain you.</p>
+
+<h4>Why This Matters For You</h4>
+<p>In your late twenties to early thirties, you're establishing career patterns that will define the next decade. Without understanding whether you're naturally introverted or extroverted, detail-oriented or big-picture, you risk building a practice style that leads to burnout rather than longevity in a demanding healthcare role.</p>
+
+<h4>Start Here This Week</h4>
+<p>Take a validated personality assessment (Myers-Briggs, Enneagram, or StrengthsFinder) and identify one specific way your temperament shows up in patient care. Then adjust one daily routine to honor that wiring—whether it's blocking 15 minutes alone between appointments or scheduling collaborative case reviews.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Financial Security & Intentionality (3.0/5)</h3>
+<p>Despite excelling in your purpose-driven work, your financial foundation is shaky. You likely lack clear systems for tracking spending, building emergency reserves, or planning for major life transitions. This creates an underlying anxiety that can undermine the confidence you've built in other areas of life.</p>
+
+<h4>Why This Matters For You</h4>
+<p>You're in prime wealth-building years where small actions compound dramatically. As a healthcare professional with stable income potential, the gap isn't likely your earning—it's the intentional structure around your money that determines whether you'll have true freedom and security in your thirties and beyond.</p>
+
+<h4>Start Here This Week</h4>
+<p>Open a high-yield savings account and set up an automatic transfer of $100-200 per paycheck as your starter emergency fund. Simultaneously, spend 30 minutes reviewing last month's spending to identify your top three expense categories—awareness precedes change.</p>
+</div>
+```
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>You're moving through life with considerable strength and clarity, particularly in your present moment—you're engaged in work that feels deeply purposeful, you're learning and growing actively, and you're maintaining meaningful relationships. Your scores reveal someone who has done real work to understand their past and is now living with intention and flow. At the same time, there are three specific areas—temperament awareness, emotional intelligence, and financial intentionality—that are quietly holding back the momentum you've built everywhere else. This isn't about what's broken; it's about recognizing where focused attention will unlock the most growth.</p><p>These lower-scoring areas matter because they form the foundation for everything else you're doing well. Understanding your natural temperament—how you're wired to respond to stress, stimulation, and social interaction—gives you the ability to design your life around your actual needs rather than fighting against them. Emotional intelligence research consistently shows that self-awareness in real time (noticing what you're feeling as it happens, not just in retrospect) is what allows us to make choices aligned with our values rather than reactive patterns. And financial intentionality isn't about having more money—it's about the psychological freedom that comes from knowing your resources match your priorities. When these three areas strengthen, the clarity you already have in purpose and relationships becomes even more powerful.</p><p>It might be worth exploring some of these patterns with a therapist—not because something is wrong, but because understanding where certain beliefs or responses came from can help you update the ones that no longer serve you. Sometimes the strategies that helped us navigate earlier chapters quietly limit us in new ones, and a skilled therapist helps you see and shift those patterns.</p><ul>
+<ul class="aiList"><li>Take a validated temperament assessment (like the Big Five or HEXACO) and spend time with the results—not just reading them, but tracking for two weeks how your scores show up in daily situations: energy patterns, social needs, stress responses</li>
+<li>Practice real-time emotion labeling: set three random phone alarms daily, and when they go off, pause and name the specific emotion you're feeling in that moment using precise language (not just "stressed" but "overwhelmed," "anxious," "frustrated")</li>
+<li>Create a simple financial dashboard: one page that shows your monthly income, fixed expenses, discretionary spending, savings rate, and one specific financial goal with a timeline—update it the first Sunday of every month</li>
+<li>Identify one recurring situation where you feel emotionally reactive or unclear, and after it happens, write down: what happened, what you felt, what you needed in that moment, and what you actually did—look for patterns after 10 entries</li>
+<li>Schedule a quarterly "temperament check-in" where you assess whether your current life structure (work schedule, social commitments, alone time, stimulation level) actually matches your natural wiring, and adjust one thing that's misaligned</li>
+</ul></ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4>Past: Temperament Awareness</h4>
+<p><strong>Week 1:</strong> At 7 a.m., 1 p.m., and 9 p.m. each day this week, log 1-5 ratings for energy, mood, and stress in a single phone note titled “Energy Map.”</p>
+<p><strong>Weeks 2-4:</strong> Each Sunday at 6 p.m., scan your Energy Map and add a yellow star emoji beside any entry rated 2 or lower to flag low points.</p>
+<p><strong>Months 2-3:</strong> Schedule a 10-minute 1 p.m. walk on workdays for the next 8 weeks to test whether midday energy improves.</p><h4>Present: Self-Awareness & Emotional Intelligence</h4>
+<p>Your Present foundation is strong — keep doing what's working.</p><h4>Future: Financial Security & Intentionality</h4>
+<p><strong>Week 1:</strong> Open a Google Sheet named “Money Map” and list every account (bank, credit, loans) with current balances and each monthly bill with its due date.</p>
+<p><strong>Weeks 2-4:</strong> Connect your primary checking account to Monarch Money (or YNAB) to auto-categorize spending for the next 3 weeks.</p>
+<p><strong>Months 2-3:</strong> Set a recurring Friday transfer of $150 to a high-yield savings account named “Safety Net” until you reach $1,200. If you want extra structure turning these numbers into weekly targets, a coach can help translate your goals into clear, doable commitments.</p>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<ul class="aiList"><li><strong>The Gifts of Imperfection</strong> by Brené Brown — This will help you understand your emotional patterns and build the self-awareness needed to recognize how your natural temperament shows up in daily life.</li>
+<li><strong>Get Good with Money</strong> by Tiffany Aliche — A practical, compassionate guide that breaks down financial systems into manageable steps, perfect for turning money anxiety into clarity and control.</li>
+</ul></ul><h4>Practices</h4>
+<ul>
+<ul class="aiList"><li><strong>Daily Energy Mapping</strong> — Each evening, note what time of day you felt most energized, most drained, and what triggered each shift to identify your natural rhythm.</li>
+<li><strong>Weekly Money Check-In</strong> — Set a recurring 15-minute appointment every Sunday to review your spending from the week and write down one financial win, no matter how small.</li>
+</ul></ul><h4>Tools</h4>
+<ul>
+<ul class="aiList"><li><strong>Copilot</strong> — A budgeting app that automatically tracks your spending across accounts and shows you patterns in real time, available at copilot.money.</li>
+<li><strong>Finch</strong> — A self-care app that helps you track mood, energy, and daily habits through a gentle gamified system, available in the iOS and Android app stores.</li>
+</ul></ul><h4>Professional Support</h4>
+<ul>
+<ul class="aiList"><li><strong>Therapy for Temperament and Self-Awareness</strong> — A therapist who works with high-functioning professionals can help you decode the patterns between your emotional responses, energy cycles, and the ways you've learned to override your own signals, giving you permission to work with your system instead of against it. Find therapists at psychologytoday.com/us/therapists or explore affordable options at openpathcollective.org.</li>
+</ul></ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
