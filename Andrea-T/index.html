@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrea T - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+/* ── AI Formatted Content ── */
+.aiSubheader {
+  color: #D09038;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aiList {
+  margin: 0.5rem 0 1rem 1.2rem;
+  padding: 0;
+}
+
+.aiList li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Andrea T</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-06-25<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">76%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Adaptive Seeker</div>
+                <div class="personaDescription">You've turned lessons into resilience, and that's rare. Your adaptability keeps you from breaking when life shifts — but it can also keep you from choosing. The future's forming, sure. But are you forming it, or are you just responding to it? Start making small bets. Test things. You don't need the full picture — you just need the next move. Adaptability is a gift when it's paired with agency. You're not just reacting — you're shaping.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Historian</div>
+                        <div class="dimensionPercentage">77%</div>
+                        <div class="dimensionOutputText">At 77%, your Historian persona reflects a past that's largely integrated and informing your present—you've done meaningful work to heal and clarify who you are, especially evident in your strong Core Beliefs & Identity. The remaining tension lives in Self-Acceptance & Forgiveness, where unresolved self-judgment may still surface even as you've gained clarity about your values and direction. This gap between knowing yourself clearly and fully accepting yourself is a natural next edge for someone at your level of alignment.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Tightrope Walker</div>
+                        <div class="dimensionPercentage">76%</div>
+                        <div class="dimensionOutputText">You've built something meaningful in your work and relationships—you're showing up authentically and it's paying off in how connected and purposeful your days feel. The gap right now is in your physical foundation: you know what your body needs to sustain this level of performance, but the routines haven't become automatic yet, and that inconsistency is costing you energy when you need it most. Closing that gap between knowing and doing—especially around sleep and movement—would give you the stability to maintain everything else you've built without burning through your reserves.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Pathfinder</div>
+                        <div class="dimensionPercentage">72%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 72%, you're a Pathfinder with strong direction and ambition—you know what you're building toward and you're setting goals that stretch you meaningfully. However, your lowest domain, Meaning & Contribution, reveals that while you're productive and forward-moving, there's a disconnect between your activity and deeper fulfillment; you may be achieving without feeling the resonance of why it matters. The unlock for you isn't doing more—it's reconnecting your capable, goal-driven energy to work and contributions that genuinely align with what you care about, transforming momentum into purpose.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 76% alignment score places you in solid "Adaptive Seeker" territory—you're actively working toward alignment with meaningful progress, though some key areas need attention.</strong></p><p>Your greatest strength is Work & Purpose (4.50/5), showing you've built strong clarity and satisfaction in your professional direction.</p><p><strong>Your most urgent opportunity is Meaning & Contribution (3.00/5)—strengthening your sense of purpose beyond work will unlock deeper fulfillment.</strong></p>
+            </div>
+
+            <!-- 13 Domains Summary -->
+<section class="section">
+    <h2 class="sectionHeader">13 Domains Summary</h2>
+    <div class="domainGrid">
+        <div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge strong">4.20</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Temperament Awareness</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Gratitude</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge developing">3.75</span></div>
+<div class="domain-item developing"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge developing">3.50</span></div>
+<div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.25</span></div>
+<div class="domain-item needs-attention"><span class="domain-name">⚠️ Meaning & Contribution</span><span class="domain-score-badge needs-attention">3.00</span></div>
+    </div>
+</section>
+
+<!-- What's Working -->
+<section class="section">
+    <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+    <div class="recommendation-card">
+<h3>Work & Purpose (4.50/5)</h3>
+<p>Your exceptional score in Work & Purpose reveals that you've achieved a rare level of clarity and fulfillment in your professional life as a Systems Analyst. You've successfully aligned your analytical strengths with meaningful work that engages you deeply, and you likely experience a strong sense of competence and contribution in your role. This isn't just about having a job you tolerate—you've cultivated genuine purpose in what you do daily.</p>
+<h4>Why This Matters For You</h4>
+<p>At this stage in your career, having this level of work alignment positions you as a valuable mentor and leader who can guide others in finding similar fulfillment. This strength also provides a stable foundation during your peak earning and advancement years, allowing you to make strategic career decisions from a place of confidence rather than desperation.</p>
+<h4>How to Leverage This</h4>
+<p>Document the specific aspects of your systems analysis work that create the most meaning for you, then actively seek or design projects that maximize these elements. Share your journey with colleagues or in professional communities to both solidify your own clarity and help others in the field discover their own sense of purpose.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Self-Awareness & EQ (4.20/5)</h3>
+<p>Your strong self-awareness and emotional intelligence indicate that you possess an unusually clear understanding of your own emotional patterns, triggers, and interpersonal dynamics—a significant asset in the often logic-dominated field of systems analysis. You likely navigate workplace relationships with nuance and can read both technical and human systems effectively. This combination of technical expertise and emotional sophistication sets you apart from many peers in your profession.</p>
+<h4>Why This Matters For You</h4>
+<p>As a Systems Analyst in your late 30s or early 40s, this emotional intelligence is critical for transitioning into senior or leadership roles where stakeholder management and team dynamics become as important as technical skills. Your ability to understand both systems and people makes you uniquely qualified to bridge the gap between technical teams and business stakeholders.</p>
+<h4>How to Leverage This</h4>
+<p>Volunteer to lead cross-functional projects or initiatives that require translating complex technical concepts to non-technical stakeholders, positioning yourself as the go-to person who can navigate both the technical and human elements of system implementations.</p>
+</div>
+</section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Meaning & Contribution (3.0/5)</h3>
+<p>Your score suggests you may be questioning whether your daily work and life activities connect to something larger than yourself. As a Systems Analyst, you're solving problems and building solutions, but the deeper "why" behind your efforts may feel unclear or disconnected right now. This gap between competence and purpose can create a subtle but persistent sense of something missing.</p>
+<h4>Why This Matters For You</h4>
+<p>At 35-44, you're in a pivotal decade where the need for meaningful contribution often intensifies—this isn't a crisis, it's an invitation to align your capable mind with work that resonates at a soul level. Without this connection, even professional success can feel hollow, and you risk spending your peak productive years feeling accomplished but unfulfilled.</p>
+<h4>Start Here This Week</h4>
+<p>Identify one project or task you're currently working on and write down specifically who benefits from it and how their life improves because of your work. Then ask yourself: what small shift could make your next project feel 10% more aligned with a cause or outcome you genuinely care about?</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>You're moving through life with a strong foundation and clear sense of purpose in your work, but there's a noticeable gap between where you've been and where you're trying to go. Your scores reveal someone who has made peace with their past and maintains solid self-awareness, yet you're experiencing friction in the daily mechanics of life — the habits, energy management, and sense of meaningful contribution that would help you close the distance between intention and impact. This isn't about lacking direction; it's about the infrastructure needed to sustain the path you're on.</p><p>The areas pulling your scores down — your physical routines, energy levels, learning momentum, and sense of contribution — are precisely where small shifts create outsized returns. Research on behavior change consistently shows that sustainable progress depends less on willpower and more on environmental design and energy management. When your body and daily systems aren't supporting you, even clear goals feel harder to reach. These aren't peripheral concerns; they're the foundation that makes everything else possible.</p><p>Given where you are, working with a coach could help you translate what you already know into consistent action. You have clarity and psychological grounding — what's needed now is someone to help you build the systems and accountability structures that turn insight into momentum. That kind of support works best when the focus is on performance and execution rather than deeper pattern work.</p><ul>
+<ul class="aiList"><li>Audit your energy across a typical week: track when you feel most alert and when you crash, then protect one high-energy block each day for your most important work before anything else claims it</li>
+<li>Choose one keystone habit to anchor your mornings — something physical and non-negotiable like a 15-minute walk or five minutes of stretching — that signals to your body the day has structure</li>
+<li>Identify one skill or area of learning you've been postponing and commit to 30 minutes twice a week, scheduled like any other meeting, to rebuild your growth momentum</li>
+<li>Define one small, recurring contribution outside your job — mentoring a junior analyst, volunteering a specific skill monthly, or creating something others can use — to reconnect your daily work with a sense of broader impact</li>
+<li>Set a weekly 10-minute review: what worked, what didn't, and what one adjustment you'll make next week. Systems thinking applies to your own life too.</li>
+</ul></ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4>Past: Self-Acceptance & Forgiveness</h4>
+<p>Your Past foundation is strong — keep doing what's working.</p><h4>Present: Habits, Health & Energy</h4>
+<p><strong>Week 1:</strong> Set a recurring 10:15 p.m. wind-down alarm on your phone for Sun–Thu.</p>
+<p><strong>Weeks 2-4:</strong> Take a 10-minute walk within 30 minutes of waking, Mon–Fri.</p>
+<p><strong>Months 2-3:</strong> Batch-cook three lunches every Sunday at 4 p.m. using a grain–protein–veggie combo.</p><h4>Future: Meaning & Contribution</h4>
+<p><strong>Week 1:</strong> On Saturday at 10 a.m., write for 15 minutes answering: “If I could contribute to one thing this year that feels meaningful, what is it and why?”</p>
+<p><strong>Weeks 2-4:</strong> By Friday 5 p.m. each week, email one person or organization to offer 1 hour of your systems skills toward that theme.</p>
+<p><strong>Months 2-3:</strong> Block a recurring 90-minute “Meaning Sprint” every Saturday 9–10:30 a.m. for the next 8 weeks; if you want extra structure to turn this into consistent weekly targets and reviews, a coach can help translate your goals into clear commitments.</p>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<ul class="aiList"><li><strong>Atomic Habits</strong> by James Clear — This will help you build the systems that make healthy routines automatic rather than relying on willpower, especially when work pressure increases.</li>
+<li><strong>Essentialism</strong> by Greg McKeown — Perfect for someone who's productive but unfulfilled, this teaches you how to identify what truly matters and eliminate the rest so your energy goes toward meaningful work.</li>
+<li><strong>All About Love</strong> by bell hooks — A powerful exploration of how love and meaning intersect in all areas of life, helping you reconnect with what genuinely resonates rather than what you think you're supposed to do.</li>
+</ul></ul><h4>Practices</h4>
+<ul>
+<ul class="aiList"><li><strong>Non-Negotiable Sleep Anchor</strong> — Set a fixed bedtime and wake time for weekdays, treating it like your most important meeting, and protect it even when other demands compete.</li>
+<li><strong>Weekly Meaning Check-In</strong> — Every Sunday evening, write down one thing you did that week that felt meaningful and one thing you'll do next week that aligns with what you actually care about, not just what's expected.</li>
+</ul></ul><h4>Tools</h4>
+<ul>
+<ul class="aiList"><li><strong>Streaks</strong> — A habit-tracking app that helps you maintain consistency with your health routines by visualizing your progress and sending gentle reminders, available on iOS.</li>
+<li><strong>Reflect</strong> — A networked note-taking app designed for daily reflection and connecting ideas over time, helping you identify patterns in what brings meaning to your work and life, available at reflect.app.</li>
+</ul></ul><h4>Professional Support</h4>
+<ul>
+<ul class="aiList"><li><strong>Coaching for Alignment and Systems</strong> — You've done the internal work and have strong self-awareness, but translating that into sustainable routines and meaningful direction is where a coach excels—helping you build the structures that keep you consistent and connected to what matters. Find ICF-certified coaches at coachingfederation.org/find-a-coach or explore Alignment Psychiatry at alignmentpsychiatry.com for professionals navigating performance and purpose.</li>
+</ul></ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
