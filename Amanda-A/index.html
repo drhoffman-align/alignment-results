@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amanda A - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+/* ── AI Formatted Content ── */
+.aiSubheader {
+  color: #D09038;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aiList {
+  margin: 0.5rem 0 1rem 1.2rem;
+  padding: 0;
+}
+
+.aiList li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Amanda A</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-06-25<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">84%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Master Navigator</div>
+                <div class="personaDescription">You don't need advice — you need acknowledgment. This is what alignment looks like: your past informs without controlling, your present reflects intention, and your future feels like something you're actively building. The only caution? Don't let success make you complacent. Even navigators need to recalibrate. Check in regularly: Am I still moving toward what matters, or am I just moving well? Your strength is staying intentional — protect that.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Phoenix</div>
+                        <div class="dimensionPercentage">84%</div>
+                        <div class="dimensionOutputText">With an 84% Past score, you've done the work to integrate your history rather than be controlled by it—your Phoenix persona reflects genuine transformation. Your exceptional Temperament Awareness shows you've learned to honor your wiring instead of fight it, which gives you a powerful foundation for managing stress and relationships. While Core Beliefs & Identity sits lower, this simply points to your next growth edge: translating that self-knowledge into an even more anchored sense of who you are at your core.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Flow Keeper</div>
+                        <div class="dimensionPercentage">85%</div>
+                        <div class="dimensionOutputText">You've built something strong here—your routines, relationships, and sense of purpose are all working in sync, and that consistency is what keeps you performing without burning out. The one place that could amplify everything else is gratitude: you understand it intellectually, but it hasn't become automatic yet, and that means your brain still defaults to scanning for problems even when things are going well. Making gratitude a brief daily habit—not just a nice idea—would help you feel the momentum you're already creating.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Holder</div>
+                        <div class="dimensionPercentage">83%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 83%, you're a Compass Holder with exceptional financial intentionality and emotional clarity around money—you've built psychological safety through structure and control, which is rare and powerful. Your courage, resilience, and sense of meaning are all strong, but your Goals & Ambition score of 3.67 reveals the gap: you have direction and stability, but you may not be reaching far enough or naming what you're truly building toward. Sharpening your ambition—getting specific about what you want to achieve beyond maintaining control—will transform your solid foundation into momentum that matches your capability.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p><strong>Your 84% alignment score places you in the "Master Navigator" range—you've built a strong foundation across most life areas and are actively steering toward your best self.</strong></p><p>Your greatest strength is Temperament Awareness (5.0/5), showing exceptional understanding of your natural patterns and how to work with them effectively.</p><p><strong>Your most urgent opportunity is Gratitude (3.5/5)—strengthening your appreciation practices could unlock deeper fulfillment and amplify your already strong alignment.</strong></p>
+            </div>
+
+            <!-- 13 Domains Summary -->
+<section class="section">
+    <h2 class="sectionHeader">13 Domains Summary</h2>
+    <div class="domainGrid">
+        <div class="domain-item perfect"><span class="domain-name">⭐ Temperament Awareness</span><span class="domain-score-badge perfect">5.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge strong">4.63</span></div>
+<div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.33</span></div>
+<div class="domain-item strong"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge strong">4.33</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge strong">4.25</span></div>
+<div class="domain-item strong"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge strong">4.25</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge strong">4.20</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge developing">3.67</span></div>
+<div class="domain-item developing"><span class="domain-name">Gratitude</span><span class="domain-score-badge developing">3.50</span></div>
+    </div>
+</section>
+
+<!-- What's Working -->
+<section class="section">
+    <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+    <div class="recommendation-card">
+<h3>Temperament Awareness (5.00/5)</h3>
+<p>Your perfect score reveals that you have exceptional clarity about your natural behavioral patterns, emotional triggers, and innate tendencies. You understand not just what you do, but why you respond the way you do in different situations. This level of self-knowledge means you can anticipate your reactions and make intentional choices rather than operating on autopilot.</p>
+<h4>Why This Matters For You</h4>
+<p>As a project manager in your late twenties or early thirties, this deep temperament awareness is a career accelerator. It allows you to navigate team dynamics with precision, adapt your communication style to different stakeholders, and position yourself in projects that align with your natural strengths rather than fighting against your wiring.</p>
+<h4>How to Leverage This</h4>
+<p>Use your temperament insights to proactively design your work environment and project approach. For example, if you know you're energized by collaboration, schedule regular team touchpoints; if you process information analytically, build in time for data review before decision meetings. Share relevant aspects of your temperament with your team to set clear expectations about how you work best.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Habits, Health & Energy (4.63/5)</h3>
+<p>Your strong score indicates you've built a solid foundation of daily routines that sustain your physical and mental energy. You're not just aware of what healthy habits look like—you're actually implementing them consistently. This suggests you have effective systems in place for sleep, movement, nutrition, or stress management that keep you operating at a high level.</p>
+<h4>Why This Matters For You</h4>
+<p>In project management, where you're juggling multiple deadlines, stakeholder demands, and team needs, your energy management is your competitive advantage. At this career stage, the professionals who advance are those who can maintain consistent performance under pressure without burning out, and your habits are setting you up for sustainable success.</p>
+<h4>How to Leverage This</h4>
+<p>Document your most effective energy-management practices and use them strategically during high-stakes project phases. When you're entering a critical sprint or facing a major deadline, double down on the habits that you know keep you sharp—whether that's your morning routine, workout schedule, or wind-down ritual—and protect them as non-negotiables in your calendar.</p>
+</div>
+</section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <div class="recommendation-card">
+<h3>Gratitude (3.50/5)</h3>
+<p>Your gratitude practice is present but inconsistent, sitting just above the threshold for concern. As a project manager in your late twenties or early thirties, you're likely focused on achievement and forward momentum, which can overshadow appreciation for what's already working. This gap suggests you may be experiencing more stress than necessary and missing opportunities to build resilience through acknowledgment.</p>
+<h4>Why This Matters For You</h4>
+<p>At this career stage, gratitude isn't just feel-good advice—it's a performance tool that reduces burnout and improves decision-making under pressure. Research shows that professionals who practice regular gratitude report 23% lower cortisol levels and significantly better team relationships, both critical for project management success.</p>
+<h4>Start Here This Week</h4>
+<p>Set a daily phone reminder for 9 PM and write down three specific things that went well that day, focusing on one work win, one relationship moment, and one personal comfort. Make at least one of these acknowledgments about someone else's contribution to your day.</p>
+</div>
+
+<div class="recommendation-card">
+<h3>Goals & Ambition (3.67/5)</h3>
+<p>Your goal clarity and ambition are moderate but lack the definition and energy that typically drives breakthrough results. While you're performing well across most areas, this score suggests your goals may be vague, inherited from others' expectations, or disconnected from your deeper values. For someone in project management, this misalignment can lead to executing others' visions brilliantly while your own aspirations remain fuzzy.</p>
+<h4>Why This Matters For You</h4>
+<p>Your twenties and early thirties are the prime decade for establishing ambitious personal goals that compound over time. Without clear, personally meaningful targets, you risk waking up at 40 having climbed the wrong ladder—professionally successful but personally unfulfilled.</p>
+<h4>Start Here This Week</h4>
+<p>Block 30 minutes this weekend to write down three specific goals you'd pursue even if no one ever knew about them or praised you for achieving them. Then identify which current commitments are actually moving you toward these goals versus simply keeping you busy.</p>
+</div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>You're operating at a remarkably high level across nearly every dimension of your life. With scores in the mid-80s across past, present, and future, you've done the foundational work of understanding yourself, built strong daily rhythms, and maintain clear direction forward. This isn't someone struggling to find their footing — this is someone who has integrated self-awareness into how they move through the world. The consistency across all three time horizons suggests you've made peace with where you've been, you're engaged with where you are, and you have genuine clarity about where you're headed.</p><p>Your lowest-scoring areas — core beliefs and identity, gratitude, and goals and ambition — aren't weaknesses so much as they're the next frontier. When someone is functioning well overall, these subtler dimensions become the difference between maintaining momentum and truly accelerating it. Core beliefs shape every decision you make, often invisibly. Gratitude research consistently shows it's one of the most reliable predictors of sustained well-being and resilience, particularly during high-pressure seasons. And goals, when they're deeply connected to identity rather than external expectations, become the organizing principle that makes everything else feel coherent. These areas matter because they're the infrastructure beneath your current success.</p><p>Given your strong foundation and the specific gap between where you are and where you want to be, working with a coach could help you translate this clarity into even more consistent action. You don't need to rebuild anything — you need someone to help you optimize what's already working and push into the areas that will create disproportionate returns.</p><ul>
+<ul class="aiList"><li>Schedule a monthly 30-minute session with yourself to write out your core beliefs about work, relationships, and success — then ask whether each one still serves you or whether it's operating on autopilot from an earlier version of yourself</li>
+<li>Start each workday by writing down three specific things you're grateful for that happened in the previous 24 hours, focusing on small moments rather than big wins — this trains your brain to notice what's working in real time</li>
+<li>Take your top three professional goals and rewrite each one as a statement that begins with "I am the kind of person who..." to shift from outcome-focused to identity-integrated language</li>
+<li>Block 90 minutes once a quarter to audit your calendar and energy allocation against your stated ambitions — identify one recurring commitment that no longer aligns and either eliminate it or redesign it</li>
+<li>Find one person in your field who is 5-10 years ahead of where you want to be and ask them specifically about how their goals evolved as they grew — use their experience to pressure-test whether your current ambitions are truly yours or inherited</li>
+</ul></ul>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4>Past: Core Beliefs & Identity</h4>
+<p>Your Past foundation is strong — keep doing what's working.</p><h4>Present: Gratitude</h4>
+<p><strong>Week 1:</strong> At 8:30 p.m. nightly, open the Notes app and write “Today I’m glad for…” followed by three specific moments from the day.</p>
+<p><strong>Weeks 2-4:</strong> After brushing your teeth each night, add one line to that same note: “One hard thing today taught me…” with a concrete benefit.</p>
+<p><strong>Months 2-3:</strong> Every Friday at 12:00, text one teammate or friend a specific thank-you using “I appreciated when you… because…”.</p><h4>Future: Goals & Ambition</h4>
+<p>Your Future foundation is strong — keep doing what's working.</p>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4>Books</h4>
+<ul>
+<ul class="aiList"><li><strong>The One Thing</strong> by Gary Keller — This book will help you cut through competing priorities and focus your ambition on what actually moves the needle, especially valuable in project management where everything feels urgent.</li>
+<li><strong>The Gifts of Imperfection</strong> by Brené Brown — When core beliefs about who you are feel shaky, this book offers a practical path to building self-worth that isn't tied to performance or external validation.</li>
+</ul></ul><h4>Practices</h4>
+<ul>
+<ul class="aiList"><li><strong>Three-Minute Gratitude Anchor</strong> — Every morning before checking your phone, name three specific things going right in your life and why they matter, training your brain to notice what's working before it scans for problems.</li>
+<li><strong>Quarterly Goal Audit</strong> — Every 90 days, review your goals and ruthlessly eliminate anything that doesn't align with your core values or move you toward your definition of success, not someone else's.</li>
+</ul></ul><h4>Tools</h4>
+<ul>
+<ul class="aiList"><li><strong>Notion</strong> — A flexible workspace that lets you build custom goal trackers, gratitude logs, and project dashboards all in one place, available at notion.so.</li>
+<li><strong>Streaks</strong> — A habit-tracking app designed around building consistency in small daily practices like gratitude journaling, available in the iOS App Store.</li>
+</ul></ul><h4>Professional Support</h4>
+<ul>
+<ul class="aiList"><li><strong>Coaching for Translating Strength into Strategy</strong> — You've built a solid foundation across most areas of life, and a coach can help you channel that into focused ambition and sustainable systems that match your values rather than external expectations. Explore ICF-certified coaches at coachingfederation.org/find-a-coach or Alignment Psychiatry at alignmentpsychiatry.com for professionals optimizing performance.</li>
+</ul></ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
