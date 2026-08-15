@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Y - Alignment Score Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                         'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #6B2C3A 0%, #D09038 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .headerTitle {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .clientName {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .headerMeta {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 20px;
+        }
+
+        /* ── Content ── */
+        .content {
+            padding: 40px;
+        }
+
+        /* ── Score Card ── */
+        .scoreCard {
+            background: linear-gradient(135deg, #6B2C3A 0%, #8B3D4F 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .alignmentPercentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .scoreLabel {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .personaName {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .personaDescription {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 40px;
+        }
+        .sectionHeader {
+            font-size: 1.8rem;
+            color: #6B2C3A;
+            border-bottom: 3px solid #D09038;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Dimension Cards ── */
+        .dimensionCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dimensionCard {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        .dimensionCard:hover {
+            border-color: #D09038;
+            box-shadow: 0 4px 12px rgba(208, 144, 56, 0.2);
+        }
+        .dimensionLabel {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dimensionPersonaLabel {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #6B2C3A;
+            margin-bottom: 8px;
+        }
+        .dimensionPercentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D09038;
+            margin-bottom: 15px;
+        }
+        .dimensionOutputText {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Bottom Line ── */
+        .bottomLine {
+            background: #fef9f0;
+            border-left: 4px solid #D09038;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        .bottomLine h3 {
+            color: #6B2C3A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .bottomLine p {
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Domain Grid ── */
+        .domainGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* domain-item classes injected by Airtable AI — use hyphens */
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 4px solid transparent;
+        }
+        .domain-item.perfect {
+            border-left-color: #4CAF50;
+            background: #f1f8f4;
+        }
+        .domain-item.strong {
+            border-left-color: #D09038;
+            background: #fef9f0;
+        }
+        .domain-item.developing {
+            border-left-color: #E65100;
+            background: #fff8f0;
+        }
+        .domain-item.needs-attention {
+            border-left-color: #f44336;
+            background: #fff3f3;
+        }
+        .domain-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .domain-score-badge {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: right;
+        }
+        .domain-score-badge.perfect { color: #4CAF50; }
+        .domain-score-badge.strong { color: #D09038; }
+        .domain-score-badge.developing { color: #E65100; }
+        .domain-score-badge.needs-attention { color: #f44336; }
+
+        /* ── Recommendation Cards (injected by Airtable AI) ── */
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .recommendation-card h3 { color: #6B2C3A; margin-bottom: 15px; font-size: 1.4rem; }
+        .recommendation-card h4 { color: #D09038; margin-bottom: 8px; margin-top: 15px; font-size: 1rem; }
+        .recommendation-card p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .recommendation-card ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .recommendation-card ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Detailed Recommendations wrapper ── */
+        .detailedRecommendations p { color: #555; margin-bottom: 10px; line-height: 1.6; }
+        .detailedRecommendations ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .detailedRecommendations ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Action Plan ── */
+        .actionPlan {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 2px solid #D09038;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .actionPlan h4 {
+            color: #D09038;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .actionPlan h4:first-child { margin-top: 0; }
+        .actionPlan p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .actionPlan ul { padding-left: 20px; color: #555; margin-bottom: 15px; }
+        .actionPlan ul li { margin-bottom: 8px; line-height: 1.6; }
+
+        /* ── Resource List ── */
+        .resourceList {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .resourceList h4 {
+            color: #D09038;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .resourceList h4:first-child { margin-top: 0; }
+        .resourceList p { color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .resourceList ul { padding-left: 20px; color: #555; margin-bottom: 10px; }
+        .resourceList ul li { margin-bottom: 8px; line-height: 1.6; }
+        .resourceList strong { color: #333; }
+
+/* ── AI Formatted Content ── */
+.aiSubheader {
+  color: #D09038;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aiList {
+  margin: 0.5rem 0 1rem 1.2rem;
+  padding: 0;
+}
+
+.aiList li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+        /* ── Footer ── */
+        .footer {
+            background: #6B2C3A;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer h3 { margin-bottom: 15px; }
+        .footer p { opacity: 0.9; margin-bottom: 10px; }
+        .ctaButton {
+            display: inline-block;
+            background: #D09038;
+            color: white;
+            border-radius: 6px;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .ctaButton:hover {
+            background: #b87b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .header { padding: 40px 20px; }
+            .headerTitle { font-size: 2rem; }
+            .clientName { font-size: 1.5rem; }
+            .content { padding: 20px; }
+            .alignmentPercentage { font-size: 4rem; }
+            .dimensionCards { grid-template-columns: 1fr; }
+            .domainGrid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .ctaButton { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="headerTitle">Your Alignment Score Results</h1>
+            <div class="clientName">Justin Y</div>
+            <div class="headerMeta">
+                Personal Growth Guide | 2026-08-15<br>
+                Assessment: The Alignment Score | Coach: Chris Hoffman, Alignment Psychiatry
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Score Card -->
+            <div class="scoreCard">
+                <div class="alignmentPercentage">82%</div>
+                <div class="scoreLabel">Overall Alignment Score</div>
+                <div class="personaName">Steady Rebuilder</div>
+                <div class="personaDescription">You're in construction mode, and that's exactly where you should be. But here's the thing about rebuilders: you can fall into the trap of constant doing without ever celebrating progress. Build in rest — not as reward, but as strategy. Burnout doesn't announce itself; it accumulates. Your routines are your foundation, but flexibility keeps them sustainable. You're allowed to adjust the pace without losing the path.</div>
+            </div>
+
+            <!-- Your Journey -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Journey</h2>
+                <div class="dimensionCards">
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PAST</div>
+                        <div class="dimensionPersonaLabel">Phoenix</div>
+                        <div class="dimensionPercentage">86%</div>
+                        <div class="dimensionOutputText">With an 86% Past score and a Phoenix persona, you've done the profound work of transforming your history into wisdom rather than weight. Your strength in Self-Acceptance & Forgiveness anchors your 82% Overall Alignment—you meet yourself with compassion, which creates the psychological stability to lead and love from wholeness. This level of integration means your past informs your present without controlling it, giving you the rare ability to reflect without being pulled backward.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">PRESENT</div>
+                        <div class="dimensionPersonaLabel">Tightrope Walker</div>
+                        <div class="dimensionPercentage">78%</div>
+                        <div class="dimensionOutputText">You've built something solid—your work is aligned, your sense of self is clear, and you're functioning at a high level across most of your life. The gap showing up is in Relationships & Authenticity, which means the way you connect with others may not yet reflect the clarity and intention you've cultivated everywhere else. A coach can be useful here—not because something's broken, but because closing this kind of performance gap is exactly where strategy and accountability make the biggest difference.</div>
+                    </div>
+                    <div class="dimensionCard">
+                        <div class="dimensionLabel">FUTURE</div>
+                        <div class="dimensionPersonaLabel">Compass Holder</div>
+                        <div class="dimensionPercentage">89%</div>
+                        <div class="dimensionOutputText">With a Future Percentage of 89%, you are a Compass Holder with exceptional clarity and courage—your sense of Meaning & Contribution and resilience are driving you forward with purpose that transcends performance. Your direction is strong, but sharpening your Financial Security & Intentionality would ensure the practical foundation matches the inspiring vision you're building, preventing resource constraints from slowing the meaningful impact you're already creating.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Bottom Line -->
+            <div class="bottomLine">
+                <h3>The Bottom Line</h3>
+                <p>Your alignment score of 82 places you in strong territory as a Steady Rebuilder, meaning you have solid foundations across most life areas and are actively working to strengthen the parts that need attention.</p><p>Your greatest strength is Courage & Resilience, where you scored 4.67 out of 5, showing exceptional ability to face challenges and bounce back from setbacks.</p><p>Your most urgent opportunity is Self-Awareness & EQ at 3.80, which suggests developing deeper understanding of your emotions and how they influence your decisions would create meaningful progress across other life areas.</p>
+            </div>
+
+            <!-- 13 Domains Summary -->
+<section class="section">
+    <h2 class="sectionHeader">13 Domains Summary</h2>
+    <div class="domainGrid">
+        <div class="domain-item strong"><span class="domain-name">Courage & Resilience</span><span class="domain-score-badge strong">4.67</span></div>
+<div class="domain-item strong"><span class="domain-name">Meaning & Contribution</span><span class="domain-score-badge strong">4.67</span></div>
+<div class="domain-item strong"><span class="domain-name">Self-Acceptance & Forgiveness</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Work & Purpose</span><span class="domain-score-badge strong">4.50</span></div>
+<div class="domain-item strong"><span class="domain-name">Goals & Ambition</span><span class="domain-score-badge strong">4.33</span></div>
+<div class="domain-item strong"><span class="domain-name">Core Beliefs & Identity</span><span class="domain-score-badge strong">4.25</span></div>
+<div class="domain-item strong"><span class="domain-name">Temperament Awareness</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Gratitude</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Learning & Growth Orientation</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item strong"><span class="domain-name">Financial Security & Intentionality</span><span class="domain-score-badge strong">4.00</span></div>
+<div class="domain-item developing"><span class="domain-name">Self-Awareness & EQ</span><span class="domain-score-badge developing">3.80</span></div>
+<div class="domain-item developing"><span class="domain-name">Relationships & Authenticity</span><span class="domain-score-badge developing">3.75</span></div>
+<div class="domain-item developing"><span class="domain-name">Habits, Health & Energy</span><span class="domain-score-badge developing">3.75</span></div>
+    </div>
+</section>
+
+<!-- What's Working -->
+<section class="section">
+    <h2 class="sectionHeader">What's Working: Your Strengths</h2>
+    <div class="recommendation-card"><h3>Courage & Resilience (4.67/5)</h3><p>Your exceptionally high score reveals that you have developed a robust capacity to face challenges head-on and bounce back from setbacks with determination. You demonstrate consistent emotional fortitude and maintain forward momentum even when circumstances are difficult, showing that you've cultivated both the mental toughness to confront fears and the adaptive flexibility to recover from adversity.</p><h4>Why This Matters For You</h4><p>This strength serves as a foundational asset that enables you to take calculated risks and pursue opportunities that others might avoid due to fear or uncertainty. Your resilience acts as a buffer against stress and setbacks, allowing you to maintain productivity and well-being even during turbulent periods.</p><h4>How to Leverage This</h4><p>Identify one area of your life where you've been playing it safe and use your proven courage to take a meaningful step forward, whether that's initiating a difficult conversation, pursuing a stretch goal, or exploring a new direction. Your track record of resilience means you can trust yourself to handle whatever outcomes emerge.</p></div><div class="recommendation-card"><h3>Meaning & Contribution (4.67/5)</h3><p>Your score indicates that you have established a clear sense of purpose beyond personal gain and actively seek ways to make a positive impact on others or the world around you. You consistently connect your daily actions to larger values and find fulfillment in contributing to something greater than yourself, which provides deep motivation and satisfaction.</p><h4>Why This Matters For You</h4><p>This strong sense of meaning acts as a powerful intrinsic motivator that sustains your energy and commitment over the long term, protecting against burnout and disillusionment. Your contribution-oriented mindset also enhances your relationships and reputation, as people naturally gravitate toward those who demonstrate genuine care for collective well-being.</p><h4>How to Leverage This</h4><p>Amplify your impact by identifying one specific way you can scale or deepen your contribution, whether through mentoring others, documenting your knowledge for broader access, or aligning more of your time with initiatives that directly serve your core values.</p></div>
+</section>
+
+            <!-- What Needs Attention -->
+            <section class="section">
+                <h2 class="sectionHeader">What Needs Attention</h2>
+                <h4>Your Optimization Opportunity</h4><div class="recommendation-card"><h3>Relationships & Authenticity (3.75/5)</h3><p>While your score here is solid, this represents your greatest opportunity for growth among otherwise strong domains. You may be holding back parts of yourself in certain relationships or struggling to maintain consistent boundaries. Small improvements here could unlock deeper connection and reduce emotional drain in your daily interactions.</p><h4>Why This Matters For You</h4><p>Authentic relationships are the foundation for sustained wellbeing and professional effectiveness. When you strengthen this area, you'll likely notice positive ripple effects across your already strong performance in work, purpose, and resilience.</p></div>
+            </section>
+
+            <!-- Personalized Recommendations -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Personalized Recommendations</h2>
+                <div class="detailedRecommendations">
+                    <p>Your scores reveal someone who is moving through life with strong forward momentum and a solid sense of self, yet you're carrying some weight in how you show up in relationships and express who you really are. With an overall alignment of 82, you've done meaningful work on accepting yourself and clarifying your core beliefs, but there's a noticeable gap between your internal clarity and how authentically you're connecting with others. You're highly oriented toward the future and have made peace with much of your past, but the present moment—particularly in relational dynamics—is where your energy isn't flowing as freely.</p><p>Your lowest score in Relationships and Authenticity matters because this is where theory meets practice. Research in social psychology consistently shows that authentic self-expression in relationships doesn't just improve connection quality—it actually reinforces the self-acceptance work you've already done. When there's a disconnect between who we know ourselves to be and how we show up with others, it creates a subtle but persistent drain on our energy and confidence. This isn't about fixing something broken; it's about closing the gap between the inner work you've completed and the outer expression that will make it real and sustainable.</p><p>Start a practice of naming one true thing in conversations where you'd normally stay surface-level, even if it's small—this builds the muscle of authentic expression without requiring you to overhaul every interaction at once.</p><p>Identify one relationship where you feel the biggest gap between your internal experience and what you actually share, and write out what you'd say if there were no risk involved. You don't have to send it, but getting it out of your head and onto paper clarifies what authenticity would actually look like for you.</p><p>Set a weekly check-in with yourself where you ask: "Where did I edit myself this week, and what was I protecting?" This isn't about judgment—it's about gathering data on your patterns so you can make conscious choices instead of automatic ones.</p><p>Choose one recurring social situation and experiment with sharing your actual opinion or preference instead of deferring or accommodating. Track how it feels and what actually happens, because often our fear of the consequences is larger than the reality.</p>
+                </div>
+            </section>
+
+            <!-- Action Plan -->
+            <section class="section">
+                <h2 class="sectionHeader">Your Action Plan</h2>
+                <div class="actionPlan">
+                    <h4 class="aiSubheader">Past: Your Past foundation is strong — keep doing what's working.
+Present: Your Present foundation is strong — keep doing what's working.
+Future: Your Future foundation is strong — keep doing what's working.</h4>
+                </div>
+            </section>
+
+            <!-- Recommended Resources -->
+            <section class="section">
+                <h2 class="sectionHeader">Recommended Resources</h2>
+                <div class="resourceList">
+                    <h4 class="aiSubheader">Books</h4><p>Set Boundaries, Find Peace by Nedra Glover Tawwab — This will help you strengthen your relationships by learning to communicate your needs clearly and maintain authenticity without guilt or overextension.</p><p>The Psychology of Money by Morgan Housel — A practical guide to understanding how emotions and behavior shape financial decisions, helping you build intentionality around money beyond just numbers and budgets.</p><h4 class="aiSubheader">Practices</h4><p>Weekly Relationship Check-In — Set aside 15 minutes each week to reflect on one relationship where you felt most authentic and one where you held back, then identify what made the difference.</p><p>Monthly Money Intention Session — At the start of each month, write down three specific financial decisions you'll make intentionally rather than automatically, then review at month's end to notice patterns.</p><h4 class="aiSubheader">Tools</h4><p>Copilot — A budgeting app that tracks spending automatically and provides insights into your financial patterns, available at copilot.money.</p><h4 class="aiSubheader">Professional Support</h4><p>Performance Coaching (Optional) — You're already operating from a strong foundation across all areas of life, and coaching could provide the strategic accountability to refine how you show up in relationships and build even more intentional financial systems that align with your values. Explore ICF-certified coaches at coachingfederation.org/find-a-coach or Alignment Psychiatry at alignmentpsychiatry.com for high-achieving professionals.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Ready to Dive Deeper?</h3>
+            <p>Questions about your results? Ready to create your personalized optimization strategy?</p>
+            <p>Schedule a session to discuss your alignment journey.</p>
+            <a href="https://calendar.app.google/2DqkJJVVkHsFuekQ8" class="ctaButton">Book Your Strategy Call</a>
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Coach Chris Hoffman<br>
+                Alignment Psychiatry<br>
+                dr.hoffman@alignmentpsychiatry.com
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
